@@ -2,10 +2,8 @@
 <html>
 <head>
     <title>Login</title>
-    <!--<script src="js/jquery.js" type="text/javascript"></script>-->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-red.min.css">
-    <script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
+    <?php include 'includes/imports.php';?>
+    <script src="js/login.js"></script>
 </head>
 
 <body>
@@ -29,7 +27,7 @@
                         </div><br>
 
                         <!-- Accent-colored raised button with ripple -->
-                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                        <button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="loginButton">
                         Login
                         </button>
                     </form>

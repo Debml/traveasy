@@ -11,11 +11,13 @@
         case "REGISTER" :
             registerUser();
             break;
+        case "LOGOUT":
+            logout();
+            break;
     }
 
     function login() {
         $userName = $_POST["username"];
-
         $result = attemptLogin($userName);
         
         if ($result["status"] == "SUCCESS") {
@@ -26,15 +28,7 @@
                 session_start();
                 $_SESSION["loggedUser"] = $userName;
 
-                //Sets a cookie if required
-                $setCookie = $_POST["cookie"];
-                if ($setCookie == "true"){
-                    if ($_COOKIE["loginService"] != $userName){
-                        setcookie("loginService", $userName, time()+(20*24*60*60), "/", "", 0);
-                    }	
-                }
-
-                echo json_encode(array("message" => "Login Successful"));
+                echo json_encode(array("message" => "Login Successful!"));
             }
             else{
                 header('HTTP/1.1 500'  . "Error: Password is incorrect");
@@ -42,9 +36,15 @@
             }
         }
         else {
-            header('HTTP/1.1 500'  . $result["status"]);
-            die($result["status"]);
+            header('HTTP/1.1 500'  . "Error: Username not found");
+            die("Error: Username not found");
         }
+    }
+
+    function logout() {
+        session_start() ;
+        session_destroy();
+        echo json_encode(array("message" => "Logout Successful!"));
     }
 
     function registerUser() {
@@ -57,7 +57,7 @@
         $result = attemptRegistration($userName, $userPassword, $firstName, $lastName, $email);
 
         if ($result["status"] == "SUCCESS"){
-            echo json_encode(array("message" => "Registration Successful"));
+            echo json_encode(array("message" => "Registration Successful!"));
         }
         else {
             header('HTTP/1.1 500'  . $result["status"]);

@@ -2,10 +2,9 @@
 <html>
 <head>
     <title>Registration</title>
-    <!--<script src="js/jquery.js" type="text/javascript"></script>-->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-red.min.css">
-    <script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
+    <?php include 'includes/imports.php';?>
+    <script src="js/registration.js"></script>
+
 </head>
 
 <body>
@@ -19,39 +18,44 @@
                 <div class="mdl-cell mdl-cell--4-col">
                     <form>
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="text" pattern="[A-Z,a-z, ]*" id="firstName">
+                            <input class="mdl-textfield__input" type="text" pattern="[A-Z, a-z, ]*" id="firstName">
                             <label class="mdl-textfield__label" for="firstName">First Name</label>
                             <span class="mdl-textfield__error">Letters and spaces only</span>
                         </div><br>
 
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="text" pattern="[A-Z,a-z, ]*" id="lastName">
+                            <input class="mdl-textfield__input" type="text" pattern="[A-Z, a-z, ]*" id="lastName">
                             <label class="mdl-textfield__label" for="lastName">Last Name</label>
                             <span class="mdl-textfield__error">Letters and spaces only</span>
                         </div><br>
 
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="text" id="username">
+                            <input class="mdl-textfield__input" type="text" pattern="[A-Z, a-z, 0-9, #, -, _]*" id="username">
                             <label class="mdl-textfield__label" for="username">Username</label>
+                            <span class="mdl-textfield__error">Letters, numbers, '#', '-' and '_' only</span>
+
                         </div><br>
 
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="password" id="password">
+                            <input class="mdl-textfield__input" type="password" pattern="[A-Z, a-z, 0-9, #, -, _]*" id="password">
                             <label class="mdl-textfield__label" for="password">Password</label>
+                            <span class="mdl-textfield__error">Letters, numbers, '#', '-' and '_' only</span>
                         </div><br>
 
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="password" id="confirmPassword">
+                            <input class="mdl-textfield__input" type="password" pattern="[A-Z, a-z, 0-9, #, -, _]*" id="confirmPassword">
                             <label class="mdl-textfield__label" for="confirmPassword">Confirm password</label>
+                            <span class="mdl-textfield__error">Letters, numbers, '#', '-' and '_' only</span>                            
                         </div><br>
 
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                             <input class="mdl-textfield__input" type="email" id="email">
                             <label class="mdl-textfield__label" for="email">Email</label>
+                            <span class="mdl-textfield__error">Please enter a valid email address</span>                                                        
                         </div><br>
 
                         <!-- Accent-colored raised button with ripple -->
-                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                        <button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="registerButton">
                         Register
                         </button>
                     </form>
