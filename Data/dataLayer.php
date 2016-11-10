@@ -57,4 +57,54 @@
             return array("status" => "Error: Error connecting to the database");
         }                
     }
+
+    function attemptRegisterChecklist($checklistType, $checklistDescription, $checklistName, $activityItems, $username){
+        $conn = connectionToDataBase();
+
+        if ($conn != null){
+            $sql = "INSERT INTO Checklists(checklistName, checklistDescription, checklistType, id) VALUES('$checklistName', '$checklistDescription', '$checklistType', 0);";
+            
+            if (mysqli_query($conn, $sql)){
+                $checklistId = $conn->insert_id;
+
+                $sql = "INSERT INTO UserHasChecklists(username, checklistId, id) VALUES('$username', '$checklistId', 0);";
+                
+                if (mysqli_query($conn, $sql)) {
+                    foreach ($activityItems as &$item) {
+                        $itemName = $item["name"];
+                        $quantity = $item["quantity"];
+                        $notes = $item["notes"];
+                        $sql = "INSERT INTO Items(itemName, quantity, notes, id) VALUES('$itemName', '$quantity', '$notes', 0);";
+
+                        if (mysqli_query($conn, $sql)) {
+                            $itemId = $conn->insert_id;
+
+                            $sql = "INSERT INTO ChecklistHasItems(checklistId, itemId, id) VALUES($checklistId, $itemId, 0);";
+
+                            if (!mysqli_query($conn, $sql)) {
+                                $conn -> close();
+                                return array("status" => "Error: Error saving checklist");
+                            }
+                        }
+                        else {
+                            $conn -> close();
+                            return array("status" => "Error: Error saving checklist"); 
+                        }
+                    }                    
+                }
+                else {
+                    $conn -> close();
+                    return array("status" => "Error: Error saving checklist"); 
+                }
+            }
+            else {
+                $conn -> close();
+                return array("status" => "Error: Error saving checklist");
+            }
+        }
+        else {
+            $conn -> close();
+            return array("status" => "Error: Error connecting to the database");
+        }   
+    }
 ?>

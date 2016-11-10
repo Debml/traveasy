@@ -18,8 +18,5 @@
         <!-- Header -->
         <?php include 'includes/footer.php';?>
         </main>
-
-
-    </div>
 </body>
 </html>

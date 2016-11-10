@@ -14,6 +14,9 @@
         case "LOGOUT":
             logout();
             break;
+        case "SAVECHECKLIST":
+            saveChecklist();
+            break;
     }
 
     function login() {
@@ -102,5 +105,23 @@
         $userPassword = substr($userPassword, 0,  $length - $count); 
 
         return $userPassword;
+    }
+
+    function saveChecklist(){
+        $checklistType = $_POST["checklistType"];
+        $checklistDescription = $_POST["checklistDescription"];
+        $checklistName = $_POST["checklistName"];
+        $activityItems = $_POST["activityItems"];
+        $username = $_POST["username"];
+
+        $result = attemptRegisterChecklist($checklistType, $checklistDescription, $checklistName, $activityItems, $username);
+
+        if ($result["status"] == "SUCCESS"){
+            echo json_encode(array("message" => "Registration Successful!"));
+        }
+        else {
+            header('HTTP/1.1 500'  . $result["status"]);
+            die($result["status"]);
+        }
     }
 ?>

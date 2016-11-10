@@ -1,7 +1,7 @@
 <?php
     echo '
     <!-- Always shows a header, even in smaller screens. -->
-    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-tabs">
         <header class="mdl-layout__header">
             <div class="mdl-layout__header-row">
                 <!-- Title -->
@@ -15,9 +15,9 @@
                 if (isset($_SESSION["loggedUser"])) { 
                     echo'
                     <a class="mdl-navigation__link" href="">Trips</a>
-                    <a class="mdl-navigation__link" href="">Checklists</a>
+                    <a class="mdl-navigation__link" href="checklists.php">Checklists</a>
                     <a class="mdl-navigation__link" href="">Contact</a>
-                    <p class="mdl-navigation__link">' . $_SESSION["loggedUser"] . '</p>
+                    <p class="mdl-navigation__link" id="username">' . $_SESSION["loggedUser"] . '</p>
                     <!-- Large Tooltip -->
                     <div id="ttLogout" class="icon material-icons">cancel</div>
                     <div class="mdl-tooltip mdl-tooltip--large" for="ttLogout">
@@ -31,10 +31,19 @@
                 }
                 echo'
                 </nav>
-            </div>
-        </header>';
+            </div>';
+
+            if (basename($_SERVER['PHP_SELF']) == "checklists.php"){
+                echo'
+                <!-- Tabs -->
+                <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+                <a href="#fixed-tab-1" class="mdl-layout__tab is-active">To-do checklists</a>
+                <a href="#fixed-tab-2" class="mdl-layout__tab">Item checklists</a>
+                </div>';
+            }
 
         echo'
+        </header>
         <!-- Drawer -->
         <div class="mdl-layout__drawer">
             <span class="mdl-layout-title">Traveasy</span>
@@ -43,7 +52,7 @@
             if (isset($_SESSION["loggedUser"])) { 
                 echo'
                 <a class="mdl-navigation__link" href="">Trips</a>
-                <a class="mdl-navigation__link" href="">Checklists</a>
+                <a class="mdl-navigation__link" href="checklists.php">Checklists</a>
                 <a class="mdl-navigation__link" href="">Contact</a>';
             }
             else {
