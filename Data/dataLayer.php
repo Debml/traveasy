@@ -3,11 +3,11 @@
 	header('Content-type: application/json');
     require_once __DIR__ . "/dbLocal.php";
 
-    function attemptLogin($userName){
+    function attemptLogin($username){
         $conn = connectionToDataBase();
 
         if ($conn != null){
-            $sql = "SELECT * FROM Users WHERE username = '$userName'";
+            $sql = "SELECT * FROM Users WHERE username = '$username'";
             $result = $conn->query($sql);
 
             if ($result->num_rows > 0) {
@@ -20,7 +20,7 @@
             }
             else{
                 $conn -> close();
-                return array("status" => "Error: Username or password is incorrect");
+                return array("status" => "Error: username or password is incorrect");
             }
         }
         else {
@@ -29,19 +29,19 @@
         }                
     }
 
-    function attemptRegistration($userName, $userPassword, $firstName, $lastName, $email){
+    function attemptRegistration($username, $userPassword, $firstName, $lastName, $email){
         $conn = connectionToDataBase();
 
         if ($conn != null){
-		    $sql = "SELECT fName, lName FROM Users WHERE username = '$userName' OR email = '$email'";
+		    $sql = "SELECT fName, lName FROM Users WHERE username = '$username' OR email = '$email'";
             $result = $conn->query($sql);
 
             if ($result->num_rows > 0) {
                 $conn -> close();
-                return array("status" => "Error: Username or email is already registered");
+                return array("status" => "Error: username or email is already registered");
             }
             else{
-                $sql = "INSERT INTO Users(fName, lName, username, passwrd, email) VALUES ('$firstName', '$lastName', '$userName', '$userPassword', '$email');";
+                $sql = "INSERT INTO Users(fName, lName, username, passwrd, email) VALUES ('$firstName', '$lastName', '$username', '$userPassword', '$email');";
                 if (mysqli_query($conn, $sql)){
                     $conn -> close();
                     return array("status" => "SUCCESS");
@@ -105,6 +105,34 @@
         else {
             $conn -> close();
             return array("status" => "Error: Error connecting to the database");
-        }   
+        }
+
+        $conn -> close();
+        return array("status" => "SUCCESS");  
+    }
+
+    function attemptLoadChecklist($username, $checklistType){
+        $conn = connectionToDataBase();
+
+        if ($conn != null){
+		    $sql = "SELECT ch.* FROM Checklists as ch, UserHasChecklists as uCh WHERE uCh.username = '$username' AND uCh.checklistId = ch.id AND ch.checklistType = '$checklistType' ORDER BY ch.id DESC";
+
+            $result = $conn->query($sql);
+
+            if ($result->num_rows > 0) {
+                $response = new ArrayObject();
+                while ($row = $result->fetch_assoc()) {
+                    $response->append(array("checklistName"=>$row["checklistName"], "checklistDescription"=>$row["checklistDescription"], 
+                    "checklistType"=>$row["checklistType"], "id"=>$row["id"]));
+                }
+            }
+
+            $conn -> close();
+            return $response;
+        }
+        else {
+            $conn -> close();
+            return array("status" => "Error: Error connecting to the database");
+        }    
     }
 ?>

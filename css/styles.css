@@ -22,7 +22,7 @@
     color: #ffffff;
 }
 
-#checklists mdl-card-square {
+#to-DoChecklists mdl-card-square {
     display: inline-block;
     vertical-align: middle;
 }
@@ -35,6 +35,7 @@
     background-color: #ffffff;
 }
 
-#to-DoChecklists{
-    display: inline;
+.card {
+    padding: 25px;
+    padding-top: 40px;
 }

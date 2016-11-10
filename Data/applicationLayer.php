@@ -17,6 +17,9 @@
         case "SAVECHECKLIST":
             saveChecklist();
             break;
+        case "LOADCHECKLIST":
+            loadChecklist();
+            break;
     }
 
     function login() {
@@ -118,6 +121,21 @@
 
         if ($result["status"] == "SUCCESS"){
             echo json_encode(array("message" => "Registration Successful!"));
+        }
+        else {
+            header('HTTP/1.1 500'  . $result["status"]);
+            die($result["status"]);
+        }
+    }
+
+    function loadChecklist(){
+        $checklistType = $_POST["checklistType"];
+        $username = $_POST["username"];
+
+        $result = attemptLoadChecklist($username, $checklistType);
+
+        if ($result["status"] != "Error: Error connecting to the database"){
+            echo json_encode($result);
         }
         else {
             header('HTTP/1.1 500'  . $result["status"]);
