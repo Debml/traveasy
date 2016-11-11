@@ -1,7 +1,11 @@
 $(document).ready(function () {
     $("#ttLogout").on("click", function () {
-        console.log("logout");
         logout();
+    });
+
+    //PENDING: fix this
+    $(".home").on("click", function () {
+        window.location.replace("index.php");
     });
 });
 

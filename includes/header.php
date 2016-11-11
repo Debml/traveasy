@@ -5,7 +5,7 @@
         <header class="mdl-layout__header">
             <div class="mdl-layout__header-row">
                 <!-- Title -->
-                <span class="mdl-layout-title">Traveasy</span>
+                <span class="mdl-layout-title home">Traveasy</span>
                 <!-- Add spacer, to align navigation to the right -->
                 <div class="mdl-layout-spacer"></div>
                 <!-- Navigation. We hide it in small screens. -->
@@ -14,12 +14,12 @@
                 session_start();
                 if (isset($_SESSION["loggedUser"])) { 
                     echo'
-                    <a class="mdl-navigation__link" href="">Trips</a>
+                    <a class="mdl-navigation__link" href="trips.php">Trips</a>
                     <a class="mdl-navigation__link" href="checklists.php">Checklists</a>
                     <a class="mdl-navigation__link" href="">Contact</a>
                     <p class="mdl-navigation__link" id="username">' . $_SESSION["loggedUser"] . '</p>
                     <!-- Large Tooltip -->
-                    <div id="ttLogout" class="icon material-icons">cancel</div>
+                    <div id="ttLogout" class="icon material-icons logoutIcon">exit_to_app</div>
                     <div class="mdl-tooltip mdl-tooltip--large" for="ttLogout">
                     Logout
                     </div>';
@@ -51,7 +51,7 @@
 
             if (isset($_SESSION["loggedUser"])) { 
                 echo'
-                <a class="mdl-navigation__link" href="">Trips</a>
+                <a class="mdl-navigation__link" href="trips.php">Trips</a>
                 <a class="mdl-navigation__link" href="checklists.php">Checklists</a>
                 <a class="mdl-navigation__link" href="">Contact</a>';
             }

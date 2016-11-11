@@ -108,7 +108,7 @@
         }
 
         $conn -> close();
-        return array("status" => "SUCCESS");  
+        return array("status" => "SUCCESS", "checklistId" => $checklistId);  
     }
 
     function attemptLoadChecklist($username, $checklistType){

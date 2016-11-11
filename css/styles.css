@@ -18,7 +18,7 @@
   background-color: #ff5252;
 }
 
-.mdl-button--white{
+.mdl-button--white {
     color: #ffffff;
 }
 
@@ -43,6 +43,14 @@
     background-color: #ffffff;
 }
 
-.description{
+.description {
     overflow: scroll;
+}
+
+.logoutIcon:hover, .home {
+    cursor: pointer;
+}
+
+#username:hover {
+    cursor: default;
 }

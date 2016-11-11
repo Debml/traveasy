@@ -23,8 +23,8 @@
                 </tr>
             </table>
 
-            <!-- Necessary to load Cards here (before whole DOM is loaded) for card actions to work-->
-            <script src="js/loadToDoChecklist.js"></script>                
+            <!-- Necessary to load Cards here (before whole DOM is loaded) for card actions to work
+            <script src="js/loadToDoChecklist.js"></script>-->
 
             <!-- Modal to add a new To-Do checklist -->
             <div class="mdl-dialog" id="toDoWindow">
@@ -84,8 +84,8 @@
                     </tr>
                 </table>
 
-                <!-- Necessary to load Cards here (before whole DOM is loaded) for card actions to work-->
-                <script src="js/loadToBringChecklist.js"></script>                    
+                <!-- Necessary to load Cards here (before whole DOM is loaded) for card actions to work
+                <script src="js/loadToBringChecklist.js"></script>-->                    
                 
                 <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-button--floating-action" id="addToBring">
                 <i class="material-icons">add</i>

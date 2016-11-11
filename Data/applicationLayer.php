@@ -123,7 +123,7 @@
         $result = attemptRegisterChecklist($checklistType, $checklistDescription, $checklistName, $activityItems, $username);
 
         if ($result["status"] == "SUCCESS"){
-            echo json_encode(array("message" => "Registration Successful!"));
+            echo json_encode($result);
         }
         else {
             header('HTTP/1.1 500'  . $result["status"]);
