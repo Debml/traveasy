@@ -22,12 +22,7 @@
     color: #ffffff;
 }
 
-#to-DoChecklists mdl-card-square {
-    display: inline-block;
-    vertical-align: middle;
-}
-
-#toDoWindow {
+#toDoWindow, #toBringWindow {
     display: none;
     margin: 0 auto;
     margin-top: 20px;
@@ -40,10 +35,14 @@
     padding-top: 40px;
 }
 
-#toDoExpanded {
+#toDoExpanded, #toBringExpanded {
     display: none;
     margin: 0 auto;
     margin-top: 20px;
     width: 600px;
     background-color: #ffffff;
+}
+
+.description{
+    overflow: scroll;
 }
