@@ -24,14 +24,13 @@ function loadToDoExpanded(checklistId, checklistName, checklistDescription) {
 }
 
 function loadToDoDataExpanded(itemsToLoad, checklistName, checklistDescription) {
-    $("#toDoExpandedList").append('<h2>' + checklistName + '</h2>');
-    $("#toDoExpandedList").append('<p>' + checklistDescription + '</p>');
+    var htmlTag = $("#toDoExpandedList");
+    htmlTag.append('<h2 style="text-align: center;">' + checklistName + '</h2>');
+    htmlTag.append('<p style="text-align: center;">' + checklistDescription + '</p>');
 
     $.each(itemsToLoad, function(key, value) {
-        var cardHtml = '<li class="mdl-list__item"><span class="mdl-list__item-primary-content"><h5>' + value["itemName"] + '</h5></span></li>'
-        $("#toDoExpandedList").append(cardHtml);
-        cardHtml = '<li class="mdl-list__item"><span class="mdl-list__item-primary-content">' + value["notes"] + '</span></li>'
-        $("#toDoExpandedList").append(cardHtml);
+        var cardHtml = '<li class="mdl-list__item itemDetail"><i class="material-icons" style="padding-right: 10px;">radio_button_checked</i><span><span class="mdl-list__item-primary-content itemSpan"><h6>' + value["itemName"] + '</h6></span><p class="expandedNotes">' + value["notes"] + '</p></li></span>'
+        htmlTag.append(cardHtml);
     });
 
     $("#toDoChecklists").hide();
@@ -66,14 +65,13 @@ function loadToBringExpanded(checklistId, checklistName, checklistDescription) {
 }
 
 function loadToBringDataExpanded(itemsToLoad, checklistName, checklistDescription) {
-    $("#toBringExpandedList").append('<h2>' + checklistName + '</h2>');
-    $("#toBringExpandedList").append('<p>' + checklistDescription + '</p>');
+    var htmlTag = $("#toBringExpandedList");
+    htmlTag.append('<h2 style="text-align: center;">' + checklistName + '</h2>');
+    htmlTag.append('<p style="text-align: center;">' + checklistDescription + '</p>');
 
     $.each(itemsToLoad, function(key, value) {
-        var cardHtml = '<li class="mdl-list__item"><span class="mdl-list__item-primary-content"><h5>' + value["itemName"] + '</h5></span></li>'
-        $("#toBringExpandedList").append(cardHtml);
-        cardHtml = '<li class="mdl-list__item"><span class="mdl-list__item-primary-content">' + value["notes"] + '</span></li>'
-        $("#toBringExpandedList").append(cardHtml);
+        var cardHtml = '<li class="mdl-list__item itemDetail"><i class="material-icons" style="padding-right: 10px;">radio_button_checked</i><span><span class="mdl-list__item-primary-content itemSpan"><h6>' + value["itemName"] + '</h6></span><p class="expandedNotes">' + value["notes"] + '</p></li></span>'
+        htmlTag.append(cardHtml);
     });
 
     $("#toBringChecklists").hide();

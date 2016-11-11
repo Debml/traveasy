@@ -54,3 +54,21 @@
 #username:hover {
     cursor: default;
 }
+
+.itemDetail {
+    padding-left: 0px;
+    padding-bottom: 0px;
+}
+
+.itemSpan {
+    height: 24px;
+}
+
+.mdl-dialog__content {
+    padding-top: 0px;
+}
+
+.expandedNotes {
+    margin-bottom: 0px;
+    color: rgba(0,0,0,.54);
+}

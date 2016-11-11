@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Home</title>
+    <title>My Checklists</title>
     <?php include 'includes/imports.php';?>
     <script src="js/global.js"></script>
     <script src="js/checklists.js"></script>
@@ -28,7 +28,6 @@
 
             <!-- Modal to add a new To-Do checklist -->
             <div class="mdl-dialog" id="toDoWindow">
-
                 <h4 class="mdl-dialog__title">New To-Do List</h4>
                 <div class="mdl-dialog__content">
                     
@@ -56,10 +55,9 @@
 
             <!-- Modal to load a To-Do checklist -->
             <div class="mdl-dialog" id="toDoExpanded">
-                <h4 class="mdl-dialog__title" id="toDoTitleExpanded"></h4>
                 <div class="mdl-dialog__content">
-                    <!-- Activities are appended here -->
                     <ul class='mdl-list' id="toDoExpandedList">
+                        <!-- Activities are appended here -->
                     </ul>
                 </div>
                 <div class="mdl-dialog__actions">
@@ -94,11 +92,10 @@
 
             <!-- Modal to add a new To-Bring checklist -->
             <div class="mdl-dialog" id="toBringWindow">
-
                 <h4 class="mdl-dialog__title">New Item List</h4>
                 <div class="mdl-dialog__content">
                     <form id="itemList">                    
-                    <!-- Items are appended here -->
+                        <!-- Items are appended here -->
                     </form>
                 </div>
                 <div class="mdl-dialog__actions">
@@ -121,10 +118,9 @@
 
             <!-- Modal to load a To-Bring checklist -->
             <div class="mdl-dialog" id="toBringExpanded">
-                <h4 class="mdl-dialog__title" id="toBringTitleExpanded"></h4>
                 <div class="mdl-dialog__content">
-                    <!-- Activities are appended here -->
                     <ul class='mdl-list' id="toBringExpandedList">
+                        <!-- Activities are appended here -->
                     </ul>
                 </div>
                 <div class="mdl-dialog__actions">
