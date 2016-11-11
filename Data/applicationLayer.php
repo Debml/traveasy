@@ -20,6 +20,9 @@
         case "LOADCHECKLIST":
             loadChecklist();
             break;
+        case "LOADITEMS":
+            loadItems();
+            break;
     }
 
     function login() {
@@ -133,6 +136,20 @@
         $username = $_POST["username"];
 
         $result = attemptLoadChecklist($username, $checklistType);
+
+        if ($result["status"] != "Error: Error connecting to the database"){
+            echo json_encode($result);
+        }
+        else {
+            header('HTTP/1.1 500'  . $result["status"]);
+            die($result["status"]);
+        }
+    }
+
+    function loadItems(){
+        $checklistId = $_POST["checklistId"];
+
+        $result = attemptLoadItems($checklistId);
 
         if ($result["status"] != "Error: Error connecting to the database"){
             echo json_encode($result);

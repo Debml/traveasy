@@ -135,4 +135,29 @@
             return array("status" => "Error: Error connecting to the database");
         }    
     }
+
+    function attemptLoadItems($checklistId){
+        $conn = connectionToDataBase();
+
+        if ($conn != null){
+		    $sql = "SELECT it.* FROM ChecklistHasItems as chI, Items as it WHERE chI.checklistId = '$checklistId' AND it.id = chI.itemId ORDER BY chI.itemId DESC";
+
+            $result = $conn->query($sql);
+
+            if ($result->num_rows > 0) {
+                $response = new ArrayObject();
+                while ($row = $result->fetch_assoc()) {
+                    $response->append(array("itemName"=>$row["itemName"], "quantity"=>$row["quantity"], 
+                    "notes"=>$row["notes"], "id"=>$row["id"]));
+                }
+            }
+
+            $conn -> close();
+            return $response;
+        }
+        else {
+            $conn -> close();
+            return array("status" => "Error: Error connecting to the database");
+        }    
+    }
 ?>

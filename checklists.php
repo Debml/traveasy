@@ -18,29 +18,56 @@
 
             <!-- Modal to add a new To-Do checklist -->
             <div class="mdl-dialog" id="toDoWindow">
+
                 <h4 class="mdl-dialog__title">New To-Do List</h4>
                 <div class="mdl-dialog__content">
-                    <form id="activityList">
-                        <div class="mdl-textfield mdl-js-textfield">
-                            <input class="mdl-textfield__input" type="text" id="chName">
-                            <label class="mdl-textfield__label" for="chName">Name your checklist</label>
-                        </div>
+                    
+                    <form id="activityList">                    
                     <!-- Activities are appended here -->
                     </form>
                 </div>
                 <div class="mdl-dialog__actions">
-                    <button type="button" class="mdl-button" id="addActivity">Add new activity</button>
-                    <button type="button" class="mdl-button" id="saveToDo">Save</button>
+                    <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" id="saveToDo">
+                    <i class="material-icons">done</i>
+                    <div class="mdl-tooltip" data-mdl-for="saveToDo">Save checklist</div>
+                    </button>
+
+                    <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" id="addActivity">
+                    <i class="material-icons">add</i>
+                    <div class="mdl-tooltip" data-mdl-for="addActivity">Add activity</div>
+                    </button>                    
+
+                    <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" id="closeToDo">
+                    <i class="material-icons">clear</i>
+                    <div class="mdl-tooltip" data-mdl-for="closeToDo">Discard checklist</div>
+                    </button>
                 </div>
             </div>
+
+            <!-- Modal to load a To-Do checklist -->
+            <div class="mdl-dialog" id="toDoExpanded">
+                <h4 class="mdl-dialog__title" id="toDoTitleExpanded"></h4>
+                <div class="mdl-dialog__content">
+                    <!-- Activities are appended here -->
+                    <ul class='mdl-list' id="toDoExpandedList">
+                    </ul>
+                </div>
+                <div class="mdl-dialog__actions">
+                    <button type="button" class="mdl-button closeToDoChecklist">Close</button>
+                </div>                
+            </div>
                 
-            <!-- Section where To-Do checklist cards are loaded-->
+            <!-- Section where To-Do checklist cards are loaded -->
             <table>
-                <tr id="to-DoChecklists">
+                <tr id="toDoChecklists">
                     <!-- To-Do Checklist cards are appended here -->
                 </tr>
             </table>
 
+            <!-- Necessary to load Cards here for actions to work-->
+            <script src="js/loadChecklist.js"></script>
+
+            <!-- Button to add a new checklist -->
             <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-button--floating-action" id="addToDo">
             <i class="material-icons">add</i>
             </button>
