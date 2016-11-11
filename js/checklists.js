@@ -32,6 +32,7 @@ $(document).ready(function () {
     });
 
     $(".closeToDoChecklist").on("click", function (event) {
+        $("#toDoExpandedList").html("");
         $("#toDoExpanded").hide();
         $("#toDoChecklists").show();
     });
@@ -61,7 +62,7 @@ $(document).ready(function () {
         $(".activityItem").each(function () {
             itemList.push({
                 "name": $(this).val(),
-                "quantity": 0,
+                "quantity": 0, //intended, to-dos have no quantities
                 "notes": "",
             });
         });
@@ -75,7 +76,7 @@ $(document).ready(function () {
         var jsonData = {
             "action": "SAVECHECKLIST",
             "checklistType": "ToDo",
-            "checklistDescription": "",
+            "checklistDescription": $("#chDescription").val(),
             "checklistName": $("#chName").val(),
             "activityItems": itemList,
             "username": $("#username").html()
