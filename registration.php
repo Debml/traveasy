@@ -4,7 +4,6 @@
     <title>Registration</title>
     <?php include 'includes/imports.php';?>
     <script src="js/registration.js"></script>
-
 </head>
 
 <body>
@@ -16,7 +15,7 @@
             <div class="mdl-grid">
                 <div class="mdl-layout-spacer"></div>
                 <div class="mdl-cell mdl-cell--4-col">
-                    <form>
+                    <form class="coloredBorder">
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                             <input class="mdl-textfield__input" type="text" pattern="[A-Z, a-z, ]*" id="firstName">
                             <label class="mdl-textfield__label" for="firstName">First Name</label>
@@ -55,18 +54,17 @@
                         </div><br>
 
                         <!-- Accent-colored raised button with ripple -->
-                        <button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="registerButton">
+                        <button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent regButton" id="registerButton">
                         Register
                         </button>
                     </form>
                 </div>
                 <div class="mdl-layout-spacer"></div>
             </div>
-        </main>
-
+        
         <!-- Header -->
         <?php include 'includes/footer.php';?>
-
+        </main>
     </div>
 </body>
 </html>

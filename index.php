@@ -3,8 +3,6 @@
 <head>
     <title>Home</title>
     <?php include 'includes/imports.php';?>
-    <script src="js/global.js"></script>
-
 </head>
 
 <body>
@@ -13,9 +11,9 @@
 
         <!-- Content -->
         <main class="mdl-layout__content">
-            <img src="images/vancouver.png">
+            <img src="images/vancouver.png" style="margin-bottom: -30px;">
 
-        <!-- Header -->
+        <!-- Footer -->
         <?php include 'includes/footer.php';?>
         </main>
 </body>

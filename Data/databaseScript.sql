@@ -8,6 +8,8 @@ CREATE TABLE Users (
 
 CREATE TABLE Trips (
     city VARCHAR(50) NOT NULL,
+    state VARCHAR(50) NOT NULL,
+    country VARCHAR(50) NOT NULL,
     tripName VARCHAR(50) NOT NULL,
     startDate DATE NOT NULL,
     endDate DATE NOT NULL,
@@ -51,3 +53,10 @@ CREATE TABLE ChecklistHasItems (
     itemId INT NOT NULL,
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT
 );
+
+CREATE TABLE TripHasItems (
+    tripId INT NOT NULL,
+    itemId INT NOT NULL,
+    checked INT NOT NULL,
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT    
+)

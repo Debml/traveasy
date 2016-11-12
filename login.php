@@ -15,7 +15,7 @@
             <div class="mdl-grid">
                 <div class="mdl-layout-spacer"></div>
                 <div class="mdl-cell mdl-cell--4-col">
-                    <form>
+                    <form class="coloredBorder">
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                             <input class="mdl-textfield__input" type="text" id="username">
                             <label class="mdl-textfield__label" for="username">Username</label>

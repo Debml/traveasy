@@ -21,7 +21,7 @@ function logout() {
         dataType: "json",
         contentType: "application/x-www-form-urlencoded",
         success: function (jsonResponse) {
-            window.location.replace("index.php");
+            window.location.replace("login.php");
         },
         error: function (errorMessage) {
             alert(errorMessage);

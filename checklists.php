@@ -3,7 +3,6 @@
 <head>
     <title>My Checklists</title>
     <?php include 'includes/imports.php';?>
-    <script src="js/global.js"></script>
     <script src="js/checklists.js"></script>
 </head>
 
@@ -12,7 +11,7 @@
     <?php include 'includes/header.php';?>
 
     <!-- Content -->
-    <main class="mdl-layout__content">
+    <main class="mdl-layout__content mdlFlex">
         <section class="mdl-layout__tab-panel is-active" id="fixed-tab-1">
             <div class="page-content">
 
@@ -22,9 +21,6 @@
                     <!-- To-Do Checklist cards are appended here -->
                 </tr>
             </table>
-
-            <!-- Necessary to load Cards here (before whole DOM is loaded) for card actions to work
-            <script src="js/loadToDoChecklist.js"></script>-->
 
             <!-- Modal to add a new To-Do checklist -->
             <div class="mdl-dialog" id="toDoWindow">
@@ -80,10 +76,7 @@
                     <tr id="toBringChecklists">
                         <!-- To-Bring Checklist cards are appended here -->
                     </tr>
-                </table>
-
-                <!-- Necessary to load Cards here (before whole DOM is loaded) for card actions to work
-                <script src="js/loadToBringChecklist.js"></script>-->                    
+                </table>                  
                 
                 <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-button--floating-action" id="addToBring">
                 <i class="material-icons">add</i>
@@ -128,9 +121,10 @@
                 </div>                
             </div>            
         </section>
-    </main>
-
+        
+    <div class="mdl-layout-spacer"></div>
     <!-- Footer -->
     <?php include 'includes/footer.php';?>
+    </main>
 </body>
 </html>

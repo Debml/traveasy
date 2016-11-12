@@ -17,11 +17,20 @@
         case "SAVECHECKLIST":
             saveChecklist();
             break;
-        case "LOADCHECKLIST":
-            loadChecklist();
+        case "LOADCHECKLISTS":
+            loadChecklists();
+            break;
+        case "LOADALLCHECKLISTS":
+            loadAllChecklists();
             break;
         case "LOADITEMS":
             loadItems();
+            break;
+        case "CREATESESSION":
+            createSession();
+            break;
+        case "SAVETRIP":
+            saveTrip();
             break;
     }
 
@@ -34,10 +43,7 @@
 
             if (decryptPassword($result["password"]) == $userPassword){
                 //Starts the current browser session
-                session_start();
-                $_SESSION["loggedUser"] = $userName;
-
-                echo json_encode(array("message" => "Login Successful!"));
+                createSession($userName);
             }
             else{
                 header('HTTP/1.1 500'  . "Error: Password is incorrect");
@@ -48,6 +54,12 @@
             header('HTTP/1.1 500'  . "Error: Username not found");
             die("Error: Username not found");
         }
+    }
+
+    function createSession($userName){
+        session_start();
+        $_SESSION["loggedUser"] = $userName;
+        echo json_encode(array("message" => "Login Successful!"));
     }
 
     function logout() {
@@ -66,7 +78,7 @@
         $result = attemptRegistration($userName, $userPassword, $firstName, $lastName, $email);
 
         if ($result["status"] == "SUCCESS"){
-            echo json_encode(array("message" => "Registration Successful!"));
+            createSession($userName);
         }
         else {
             header('HTTP/1.1 500'  . $result["status"]);
@@ -131,11 +143,25 @@
         }
     }
 
-    function loadChecklist(){
+    function loadChecklists(){
         $checklistType = $_POST["checklistType"];
         $username = $_POST["username"];
 
-        $result = attemptLoadChecklist($username, $checklistType);
+        $result = attemptLoadChecklists($username, $checklistType);
+
+        if ($result["status"] != "Error: Error connecting to the database"){
+            echo json_encode($result);
+        }
+        else {
+            header('HTTP/1.1 500'  . $result["status"]);
+            die($result["status"]);
+        }
+    }
+
+    function loadAllChecklists(){
+        $username = $_POST["username"];
+
+        $result = attemptLoadAllChecklists($username);
 
         if ($result["status"] != "Error: Error connecting to the database"){
             echo json_encode($result);
@@ -158,5 +184,28 @@
             header('HTTP/1.1 500'  . $result["status"]);
             die($result["status"]);
         }
+    }
+
+    function saveTrip(){
+        $username = $_POST["username"];
+        $tripName = $_POST["tripName"];
+        $city = $_POST["city"];
+        $state = $_POST["state"]; 
+        $country = $_POST["country"];
+        $startDate = $_POST["startDate"];
+        $endDate = $_POST["endDate"];
+        $toDoList = $_POST["toDoList"];
+        $toBringList = $_POST["toBringList"];  
+
+        $result = attemptSaveTrip($username, $tripName, $city, $state, $country, $startDate, $endDate, $toDoList, $toBringList);
+
+        if ($result["status"] == "SUCCESS"){
+            echo json_encode($result);
+        }
+        else {
+            header('HTTP/1.1 500'  . $result["status"]);
+            die($result["status"]);
+        }
+
     }
 ?>

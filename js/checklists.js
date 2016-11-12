@@ -25,8 +25,8 @@ function loadToDoExpanded(checklistId, checklistName, checklistDescription) {
 
 function loadToDoDataExpanded(itemsToLoad, checklistName, checklistDescription) {
     var htmlTag = $("#toDoExpandedList");
-    htmlTag.append('<h2 style="text-align: center;">' + checklistName + '</h2>');
-    htmlTag.append('<p style="text-align: center;">' + checklistDescription + '</p>');
+    htmlTag.append('<div><h2 style="text-align: center;">' + checklistName + '</h2>');
+    htmlTag.append('<p style="text-align: center;">' + checklistDescription + '</p></div>');
 
     $.each(itemsToLoad, function(key, value) {
         var cardHtml = '<li class="mdl-list__item itemDetail"><i class="material-icons" style="padding-right: 10px;">radio_button_checked</i><span><span class="mdl-list__item-primary-content itemSpan"><h6>' + value["itemName"] + '</h6></span><p class="expandedNotes">' + value["notes"] + '</p></li></span>'
@@ -34,6 +34,7 @@ function loadToDoDataExpanded(itemsToLoad, checklistName, checklistDescription) 
     });
 
     $("#toDoChecklists").hide();
+    $("#addToDo").hide();
     $("#toDoExpanded").show();
 }
 
@@ -75,6 +76,7 @@ function loadToBringDataExpanded(itemsToLoad, checklistName, checklistDescriptio
     });
 
     $("#toBringChecklists").hide();
+    $("#addToBring").hide();    
     $("#toBringExpanded").show();
 }
 
@@ -89,6 +91,7 @@ $(document).ready(function() {
         toDoListAddHeaders();
         addActivity();
         $("#toDoChecklists").hide();
+        $("#addToDo").hide();            
         $("#toDoWindow").show();
     });
 
@@ -107,19 +110,11 @@ $(document).ready(function() {
         $('.mdl-tooltip.is-active').removeClass('is-active');
     });
 
-    /*
-    $(".openToDoChecklist").on("click", function (event) {
-        var checklistId = $(this).attr('id'); //parsing the button/checklist id
-        checklistId = checklistId.slice(4);
-        var checklistName = $(this).parent().parent().find("h2").html() //parsing card/checklist name
-        var checklistDescription = $(this).parent().parent().children(".description").html()//parsing card/checklist description
-        loadToDoExpanded(checklistId, checklistName, checklistDescription);
-    });*/
-
     $(".closeToDoChecklist").on("click", function(event) {
         $("#toDoExpandedList").html(""); //resets the div
         $("#toDoExpanded").hide();
         $("#toDoChecklists").show();
+        $("#addToDo").show();            
     });
 
     function toDoListAddHeaders() {
@@ -179,7 +174,7 @@ $(document).ready(function() {
                 }
 
                 addToDoCardToDOM(newCardData, $("#toDoChecklists"), false);
-                closeAddToDo();
+                closeToDo();
                 componentHandler.upgradeDom();
             },
             error: function(errorMessage) {
@@ -192,7 +187,7 @@ $(document).ready(function() {
 
     function loadToDo() {
         var jsonData = {
-            "action": "LOADCHECKLIST",
+            "action": "LOADCHECKLISTS",
             "checklistType": "ToDo",
             "username": $("#username").html()
         };
@@ -230,51 +225,16 @@ $(document).ready(function() {
         }
     }
 
-    /*
-        function loadToDoExpanded(checklistId, checklistName, checklistDescription) {
-            var jsonData = {
-                "action": "LOADITEMS",
-                "checklistId": checklistId
-            };
-    
-            $.ajax({
-                url: "data/applicationLayer.php",
-                type: "POST",
-                data: jsonData,
-                dataType: "json",
-                contentType: "application/x-www-form-urlencoded",
-                success: function (jsonResponse) {
-                    loadToDoDataExpanded(jsonResponse, checklistName, checklistDescription);
-                },
-                error: function (errorMessage) {
-                    alert(errorMessage.responseText);
-                }
-            });
-        }
-    
-        function loadToDoDataExpanded(itemsToLoad, checklistName, checklistDescription) {
-            $("#toDoExpandedList").append('<h2>' + checklistName + '</h2>');
-            $("#toDoExpandedList").append('<p>' + checklistDescription + '</p>');
-    
-            $.each(itemsToLoad, function (key, value) {
-                var cardHtml = '<li class="mdl-list__item"><span class="mdl-list__item-primary-content"><h5>' + value["itemName"] + '</h5></span></li>'
-                $("#toDoExpandedList").append(cardHtml);
-                cardHtml = '<li class="mdl-list__item"><span class="mdl-list__item-primary-content">' + value["notes"] + '</span></li>'
-                $("#toDoExpandedList").append(cardHtml);
-            });
-    
-            $("#toDoChecklists").hide();
-            $("#toDoExpanded").show();
-        }*/
-
     function closeToDo() {
         $("#toDoWindow").hide();
+        $("#addToDo").show();    
         $("#toDoChecklists").show();
         resetChecklist();
     }
 
     function closeAddToDo(){
         $("#toDoWindow").hide();
+        $("#addToDo").show();            
         $("#toDoChecklists").show();
         resetChecklist();        
     }    
@@ -296,6 +256,7 @@ $(document).ready(function() {
         toBringListAddHeaders();
         addItem();
         $("#toBringChecklists").hide();
+        $("#addToBring").hide();            
         $("#toBringWindow").show();
     });
 
@@ -314,18 +275,11 @@ $(document).ready(function() {
         $('.mdl-tooltip.is-active').removeClass('is-active');
     });
 
-    /**$(".openToBringChecklist").on("click", function (event) {
-        var checklistId = $(this).attr('id'); //parsing the button/checklist id
-        checklistId = checklistId.slice(4);
-        var checklistName = $(this).parent().parent().find("h2").html() //parsing card/checklist name
-        var checklistDescription = $(this).parent().parent().children(".description").html()//parsing card/checklist description
-        loadToBringExpanded(checklistId, checklistName, checklistDescription);
-    });**/
-
     $(".closeToBringChecklist").on("click", function(event) {
         $("#toBringExpandedList").html(""); //resets the div
         $("#toBringExpanded").hide();
         $("#toBringChecklists").show();
+        $("#addToBring").show();            
     });
 
     function toBringListAddHeaders() {
@@ -385,7 +339,7 @@ $(document).ready(function() {
                 }
 
                 addToBringCardToDOM(newCardData, $("#toBringChecklists"), false);
-                closeAddToBring();
+                closeToBring();
                 componentHandler.upgradeDom();
             },
             error: function(errorMessage) {
@@ -396,58 +350,23 @@ $(document).ready(function() {
         resetChecklist();
     }
 
-    /*
-        function loadToBringExpanded(checklistId, checklistName, checklistDescription) {
-            var jsonData = {
-                "action": "LOADITEMS",
-                "checklistId": checklistId
-            };
-    
-            $.ajax({
-                url: "data/applicationLayer.php",
-                type: "POST",
-                data: jsonData,
-                dataType: "json",
-                contentType: "application/x-www-form-urlencoded",
-                success: function (jsonResponse) {
-                    loadToBringDataExpanded(jsonResponse, checklistName, checklistDescription);
-                },
-                error: function (errorMessage) {
-                    alert(errorMessage.responseText);
-                }
-            });
-        }
-    
-        function loadToBringDataExpanded(itemsToLoad, checklistName, checklistDescription) {
-            $("#toBringExpandedList").append('<h2>' + checklistName + '</h2>');
-            $("#toBringExpandedList").append('<p>' + checklistDescription + '</p>');
-    
-            $.each(itemsToLoad, function (key, value) {
-                var cardHtml = '<li class="mdl-list__item"><span class="mdl-list__item-primary-content"><h5>' + value["itemName"] + '</h5></span></li>'
-                $("#toBringExpandedList").append(cardHtml);
-                cardHtml = '<li class="mdl-list__item"><span class="mdl-list__item-primary-content">' + value["notes"] + '</span></li>'
-                $("#toBringExpandedList").append(cardHtml);
-            });
-    
-            $("#toBringChecklists").hide();
-            $("#toBringExpanded").show();
-        }*/
-
     function closeToBring() {
         $("#toBringWindow").hide();
+        $("#addToBring").show();            
         $("#toBringChecklists").show();
         resetChecklist();
     }
 
     function closeAddToBring(){
         $("#toBringWindow").hide();
+        $("#addToBring").hide();                    
         $("#toBringChecklists").show();
         resetChecklist();        
     }
 
     function loadToBring() {
         var jsonData = {
-            "action": "LOADCHECKLIST",
+            "action": "LOADCHECKLISTS",
             "checklistType": "ToBring",
             "username": $("#username").html()
         };

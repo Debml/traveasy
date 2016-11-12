@@ -14,7 +14,6 @@
 
 .mdl-card-square > .mdl-card__title {
   color: #fff;
-  /*background-color: #46B6AC;*/
   background-color: #ff5252;
 }
 
@@ -22,7 +21,7 @@
     color: #ffffff;
 }
 
-#toDoWindow, #toBringWindow {
+#toDoWindow, #toBringWindow, #addTripWindow {
     display: none;
     margin: 0 auto;
     margin-top: 20px;
@@ -71,4 +70,30 @@
 .expandedNotes {
     margin-bottom: 0px;
     color: rgba(0,0,0,.54);
+}
+
+.coloredBorder {
+    border-color: #ff5252;
+    border-style: solid;
+    border-width: 4px;
+    padding: 50px;
+}
+
+.regButton {
+    margin-top: 10px;
+} 
+
+/*PENDING - Make expanded checklist modal as a card*/
+.modalCardTop {
+  color: #fff;
+  background-color: #ff5252;
+}
+
+.mdlFlex {
+	display: flex;
+	flex-direction: column;
+}
+
+.footer {
+    margin-top: 30px;
 }

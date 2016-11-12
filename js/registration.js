@@ -3,7 +3,6 @@ $(document).ready(function () {
         //password and confirm password fields match
         if ($("#password").val() == $("#confirmPassword").val()) {
             registerToDatabase();
-            console.log("register");
         }
         else {
             //PENDING
@@ -28,14 +27,11 @@ $(document).ready(function () {
                 contentType: "application/x-www-form-urlencoded",
                 success: function (jsonResponse) {
                     window.location.replace("index.php");
-                    //PENDING
-                    //send to homepage, log in, maybe with start session
                 },
                 error: function (errorMessage) {
                     alert(errorMessage.responseText);
                 }
             });
         }
-
     });
 });
