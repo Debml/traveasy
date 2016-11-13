@@ -15,6 +15,13 @@
         <!-- Content -->
         <main class="mdl-layout__content">
 
+            <!-- Section where trip cards are loaded -->
+            <table>
+                <tr id="tripCards">
+                    <!-- trip cards are appended here -->
+                </tr>
+            </table>
+
             <!-- Modal to add a new Trip checklist -->
             <div class="mdl-dialog" id="addTripWindow">
                 <h4 class="mdl-dialog__title">New trip</h4>

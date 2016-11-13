@@ -1,10 +1,17 @@
+function openTripOnClick(tripId, tripName, startDate, endDate) {
+    console.log("click");
+}
+
 $(document).ready(function() {
     componentHandler.upgradeDom();
+
+    loadTrips();
 
     $("#addTrip").on("click", function() {
         createAddTripModal();
         $("#addTripWindow").show();
         $("#addTrip").hide();
+        $("#tripCards").hide();
     });
 
     function createAddTripModal(){
@@ -30,6 +37,7 @@ $(document).ready(function() {
     function closeAddTrip() {
         $("#addTripWindow").hide();
         $("#addTrip").show();
+        $("#tripCards").show();
         resetAddTrip();
     }
 
@@ -137,11 +145,60 @@ $(document).ready(function() {
             dataType: "json",
             contentType: "application/x-www-form-urlencoded",
             success: function(jsonResponse) {
-                console.log(jsonResponse);
+                var newCardData = {
+                    "id": jsonResponse["tripId"],
+                    "tripName": jsonData["tripName"], 
+                    "startDate": jsonData["startDate"],
+                    "endDate": jsonData["endDate"]
+                }
+
+                addTripCardToDOM(newCardData, $("#tripCards"), false);
+                closeAddTrip();
+                componentHandler.upgradeDom();            
             },
             error: function(errorMessage) {
                 alert(errorMessage);
             }
         });
     }
+
+    function loadTrips() {
+        var jsonData = {
+            "action": "LOADTRIPS",
+            "username": $("#username").html()
+        };
+
+        $.ajax({
+            url: "data/applicationLayer.php",
+            type: "POST",
+            data: jsonData,
+            dataType: "json",
+            contentType: "application/x-www-form-urlencoded",
+            success: function(jsonResponse) {
+                loadTripCards(jsonResponse);
+            },
+            error: function(errorMessage) {
+                alert(errorMessage.responseText);
+            }
+        });
+    }
+
+    function loadTripCards(trips) {
+        var htmlTag = $("#tripCards");
+        $.each(trips, function(key, value) {
+            addTripCardToDOM(value, htmlTag, true);
+        });
+        componentHandler.upgradeDom();
+    }
+
+    function addTripCardToDOM(value, htmlTag, append){
+        console.log(value);
+        var card = '<td><div class="card" id="trip' + value["id"] + '"><div class="mdl-card-square mdl-card mdl-shadow--4dp"><div class="mdl-card__title mdl-card--expand"><h2 class="mdl-card__title-text title">' + value["tripName"] + '</h2></div><div class="mdl-card__supporting-text description">' + value["startDate"] + ' - ' + value["endDate"] + '</div><div class="mdl-card__actions mdl-card--border"><p class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect openToDoChecklist" id="trip' + value["id"] + '" onclick="openTripOnClick(' + value["id"] + ',\'' + value["tripName"] + '\',\'' + value["startDate"] + '\',\'' + value["endDate"] + '\')">View Trip</p></div><div class="mdl-card__menu"><button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect mdl-button--white"><i class="material-icons">edit</i></button><button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect mdl-button--white"><i class="material-icons">delete</i></button></div></div></div></td>';
+        if(append){
+            htmlTag.append(card);
+        }
+        else{
+            htmlTag.prepend(card);
+        }
+    }    
 });

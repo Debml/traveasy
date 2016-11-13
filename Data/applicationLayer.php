@@ -32,6 +32,9 @@
         case "SAVETRIP":
             saveTrip();
             break;
+        case "LOADTRIPS":
+            loadTrips();
+            break;
     }
 
     function login() {
@@ -206,6 +209,19 @@
             header('HTTP/1.1 500'  . $result["status"]);
             die($result["status"]);
         }
+    }
 
+    function loadTrips(){
+        $username = $_POST["username"];
+
+        $result = attemptLoadTrips($username);
+
+        if ($result["status"] != "Error: Error connecting to the database"){
+            echo json_encode($result);
+        }
+        else {
+            header('HTTP/1.1 500'  . $result["status"]);
+            die($result["status"]);
+        }
     }
 ?>

@@ -190,7 +190,7 @@
         $conn = connectionToDataBase();
 
         if ($conn != null){
-		    $sql = "INSERT INTO Trips(city, state, country, tripName, startDate, endDate, id) VALUES('$city', '$state', '$country', '$tripName', '$startDate', '$endDate', 0);";
+		    $sql = "INSERT INTO Trips(city, state, country, tripName, startDate, endDate, id) VALUES('$city', '$state', '$country', '$tripName', STR_TO_DATE('$startDate','%m/%d/%Y'), STR_TO_DATE('$endDate','%m/%d/%Y'), 0);";
 
             if (mysqli_query($conn, $sql)){
                 $tripId = $conn->insert_id;
@@ -254,5 +254,30 @@
         }
         $conn -> close();
         return array("status" => "SUCCESS", "tripId" => $tripId);              
+    }
+
+    function attemptLoadTrips($username){
+        $conn = connectionToDataBase();
+
+        if ($conn != null){
+		    $sql = "SELECT tr.*, DATE_FORMAT(tr.startDate,'%M %e, %Y') AS niceSDate, DATE_FORMAT(tr.endDate,'%M %e, %Y') AS niceEDate FROM Trips as tr, UserHasTrips as uTr WHERE uTr.username = '$username' AND uTr.tripId = tr.id ORDER BY tr.startDate DESC";
+
+            $result = $conn->query($sql);
+
+            if ($result->num_rows > 0) {
+                $response = new ArrayObject();
+                while ($row = $result->fetch_assoc()) {
+                    $response->append(array("city"=>$row["city"], "state"=>$row["state"], 
+                    "country"=>$row["country"], "tripName"=>$row["tripName"], "startDate"=>$row["niceSDate"], "endDate"=>$row["niceEDate"], "id"=>$row["id"]));
+                }
+            }
+
+            $conn -> close();
+            return $response;
+        }
+        else {
+            $conn -> close();
+            return array("status" => "Error: Error connecting to the database");
+        }    
     }
 ?>
