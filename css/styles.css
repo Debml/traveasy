@@ -34,7 +34,7 @@
     padding-top: 40px;
 }
 
-#toDoExpanded, #toBringExpanded {
+#toDoExpanded, #toBringExpanded, #tripExpanded {
     display: none;
     margin: 0 auto;
     margin-top: 20px;

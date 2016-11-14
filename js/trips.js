@@ -1,5 +1,76 @@
 function openTripOnClick(tripId, tripName, startDate, endDate) {
-    console.log("click");
+    loadExpandedTrip(tripId, tripName, startDate, endDate);
+}
+
+function loadExpandedTrip(tripId, tripName, startDate, endDate){
+    var jsonData = {
+        "action": "LOADEXPANDEDTRIP",
+        "tripId": tripId
+    };
+
+    $.ajax({
+        url: "data/applicationLayer.php",
+        type: "POST",
+        data: jsonData,
+        dataType: "json",
+        contentType: "application/x-www-form-urlencoded",
+        success: function(jsonResponse) {
+            loadTripDataExpanded(jsonResponse, tripId, tripName, startDate, endDate)        
+        },
+        error: function(errorMessage) {
+            alert(errorMessage.responseText);
+        }
+    });
+}
+
+function loadTripDataExpanded(tripData, tripId, tripName, startDate, endDate){
+    var htmlTag = $("#tripExpandedList");
+    var toDoItems = 0;
+    var toBringItems = 0;
+
+    htmlTag.append('<div><h2 style="text-align: center;">' + tripName + '</h2>');
+    htmlTag.append('<div><h4 style="text-align: center;">' + tripLocationFormatter(tripData[0]["city"], tripData[0]["state"], tripData[0]["country"]) + '</h4>');
+    htmlTag.append('<p style="text-align: center;">' + startDate + " - " + endDate + '</p></div>');
+
+    $.each(tripData, function(key, value) {
+        if (value["checklistType"] == "ToDo") {
+            toDoItems++;
+
+            var toDoSectionHtml = '<li style="list-style: none;"><label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="td' + value["itemId"] + '"><input type="checkbox" id="td' + value["itemId"] + '" class="mdl-checkbox__input" checked><span class="mdl-checkbox__label">' + value["itemName"] + '</span></label><p class="expandedNotes">' + value["itemNotes"] + '</p></li>'
+            $("#toDoSection").append(toDoSectionHtml);
+            componentHandler.upgradeDom();
+        }
+        else if (value["checklistType"] == "ToBring") {
+            toBringItems++;
+
+            var toBringSectionHtml = '<li style="list-style: none;"><label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="td' + value["itemId"] + '"><input type="checkbox" id="td' + value["itemId"] + '" class="mdl-checkbox__input" checked><span class="mdl-checkbox__label">' + value["itemName"] + '</span></label><p class="expandedNotes">' + value["itemNotes"] + '</p></li>'
+            $("#toBringSection").append(toBringSectionHtml);
+            componentHandler.upgradeDom();
+        }
+    });
+
+    if (toDoItems == 0) {
+        $("#toDoSection").append('<p class="expandedNotes">Looks like you didn\'t select a To-Do checklist!</p>');
+    }
+    if (toBringItems == 0) {
+        $("#toBringSection").append('<p class="expandedNotes">Looks like you didn\'t select an Item checklist!</p>');
+    }
+
+    $("#tripCards").hide();
+    $("#addTrip").hide();
+    $("#tripExpanded").show();
+}
+
+function tripLocationFormatter(city, state, country){
+    var location = city + ", ";
+
+    if (state != ""){
+        location += state + ", ";
+    }
+
+    location += country;
+
+    return location;
 }
 
 $(document).ready(function() {
@@ -32,6 +103,15 @@ $(document).ready(function() {
     $("#closeTrip").on("click", function() {
         closeAddTrip();
         $('.mdl-tooltip.is-active').removeClass('is-active');
+    });
+
+    $(".closeTrip").on("click", function(event) {
+        $("#tripExpandedList").html(""); //resets the div
+        $("#toDoSection").html(""); //resets the div
+        $("#toBringSection").html(""); //resets the div
+        $("#tripExpanded").hide();
+        $("#tripCards").show();
+        $("#addTrip").show();            
     });
 
     function closeAddTrip() {
@@ -192,8 +272,7 @@ $(document).ready(function() {
     }
 
     function addTripCardToDOM(value, htmlTag, append){
-        console.log(value);
-        var card = '<td><div class="card" id="trip' + value["id"] + '"><div class="mdl-card-square mdl-card mdl-shadow--4dp"><div class="mdl-card__title mdl-card--expand"><h2 class="mdl-card__title-text title">' + value["tripName"] + '</h2></div><div class="mdl-card__supporting-text description">' + value["startDate"] + ' - ' + value["endDate"] + '</div><div class="mdl-card__actions mdl-card--border"><p class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect openToDoChecklist" id="trip' + value["id"] + '" onclick="openTripOnClick(' + value["id"] + ',\'' + value["tripName"] + '\',\'' + value["startDate"] + '\',\'' + value["endDate"] + '\')">View Trip</p></div><div class="mdl-card__menu"><button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect mdl-button--white"><i class="material-icons">edit</i></button><button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect mdl-button--white"><i class="material-icons">delete</i></button></div></div></div></td>';
+        var card = '<td><div class="card" id="trip' + value["id"] + '"><div class="mdl-card-square mdl-card mdl-shadow--4dp"><div class="mdl-card__title mdl-card--expand"><h2 class="mdl-card__title-text title">' + value["tripName"] + '</h2></div><div class="mdl-card__supporting-text description">' + value["startDate"] + ' - ' + value["endDate"] + '</div><div class="mdl-card__actions mdl-card--border"><p class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect openTrip" id="trip' + value["id"] + '" onclick="openTripOnClick(' + value["id"] + ',\'' + value["tripName"] + '\',\'' + value["startDate"] + '\',\'' + value["endDate"] + '\')">View Trip</p></div><div class="mdl-card__menu"><button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect mdl-button--white"><i class="material-icons">edit</i></button><button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect mdl-button--white"><i class="material-icons">delete</i></button></div></div></div></td>';
         if(append){
             htmlTag.append(card);
         }

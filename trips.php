@@ -42,6 +42,28 @@
                 </div>
             </div>
 
+
+            <!-- Modal to load a Trip -->
+            <div class="mdl-dialog" id="tripExpanded">
+                <div class="mdl-dialog__content">
+                    <ul class='mdl-list' id="tripExpandedList">
+                        <!-- Trip info is appended here -->
+                    </ul>
+                    <h4 style="text-align: center;">To-Do Checklist</h4>
+                    <ul id="toDoSection">
+                    </ul>
+
+                    <h4 style="text-align: center;">Item Checklist</h4>
+                    <ul id="toBringSection">
+                    </ul>
+                </div>
+                <div class="mdl-dialog__actions">
+                    <button type="button" class="mdl-button closeTrip">Close</button>
+                    <button type="button" class="mdl-button closeTrip">Save</button>
+                    <button type="button" class="mdl-button closeTrip" id="suggestionsButton">Load Suggestions</button>
+                </div>                
+            </div>
+
             <!-- Button to add a new trip -->
             <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-button--floating-action" id="addTrip">
             <i class="material-icons">add</i>

@@ -35,6 +35,9 @@
         case "LOADTRIPS":
             loadTrips();
             break;
+        case "LOADEXPANDEDTRIP":
+            loadExpandedTrip();
+            break;
     }
 
     function login() {
@@ -224,4 +227,19 @@
             die($result["status"]);
         }
     }
+
+    function loadExpandedTrip(){
+        $tripId = $_POST["tripId"];
+
+        $result = attemptLoadExpandedTrip($tripId);
+
+        if ($result["status"] != "Error: Error connecting to the database"){
+            echo json_encode($result);
+        }
+        else {
+            header('HTTP/1.1 500'  . $result["status"]);
+            die($result["status"]);
+        }
+    }
+
 ?>

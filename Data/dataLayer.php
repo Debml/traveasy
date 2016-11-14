@@ -280,4 +280,31 @@
             return array("status" => "Error: Error connecting to the database");
         }    
     }
+
+    function attemptLoadExpandedTrip($tripId){
+        $conn = connectionToDataBase();
+
+        if ($conn != null){
+            $sql = "SELECT * FROM Trips as tr JOIN TripUsesChecklists as trCh ON (tr.id = trCh.tripId) LEFT JOIN Checklists as ch ON (trCh.checklistId = ch.id) LEFT JOIN ChecklistHasItems as chI ON (ch.id = chI.checklistId) LEFT JOIN Items as it ON (chI.itemId = it.id) LEFT JOIN TripHasItems as trI ON(it.id = trI.itemId AND tr.id = trI.tripId) WHERE tr.id = '$tripId';";
+            $result = $conn->query($sql);
+
+            if ($result->num_rows > 0) {
+                $response = new ArrayObject();
+                while ($row = $result->fetch_assoc()) {
+                    $response->append(array("city"=>$row["city"], "state"=>$row["state"], 
+                    "country"=>$row["country"], "checklistName"=>$row["checklistName"], "checklistDescription"=>$row["checklistDescription"], "checklistType"=>$row["checklistType"], "itemName"=>$row["itemName"], "itemNotes"=>$row["notes"], "checked"=>$row["checked"], "itemId"=>$row["itemId"]));
+                }
+                return $response;
+            }
+            else {
+                $conn -> close();
+                return array("status" => "Error: Error connecting to the database");
+            }
+        }
+        else {
+            $conn -> close();
+            return array("status" => "Error: Error connecting to the database");
+        }
+
+    }
 ?>
