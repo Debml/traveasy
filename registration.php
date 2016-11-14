@@ -16,6 +16,7 @@
                 <div class="mdl-layout-spacer"></div>
                 <div class="mdl-cell mdl-cell--4-col">
                     <form class="coloredBorder">
+                        <h3>Register</h3>
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                             <input class="mdl-textfield__input" type="text" pattern="[A-Z, a-z, ]*" id="firstName">
                             <label class="mdl-textfield__label" for="firstName">First Name</label>
