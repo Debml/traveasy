@@ -38,6 +38,9 @@
         case "LOADEXPANDEDTRIP":
             loadExpandedTrip();
             break;
+        case "UPDATECHECKBOX":
+            updateCheckedItems();
+            break;
     }
 
     function login() {
@@ -234,6 +237,21 @@
         $result = attemptLoadExpandedTrip($tripId);
 
         if ($result["status"] != "Error: Error connecting to the database"){
+            echo json_encode($result);
+        }
+        else {
+            header('HTTP/1.1 500'  . $result["status"]);
+            die($result["status"]);
+        }
+    }
+
+    function updateCheckedItems(){
+        $tripId = $_POST["tripId"];
+        $itemList = $_POST["items"];
+
+        $result = attemptUpdateCheckedItems($tripId, $itemList);
+
+        if ($result["status"] == "SUCCESS"){
             echo json_encode($result);
         }
         else {

@@ -212,7 +212,7 @@
 
                                 if(!mysqli_query($conn, $sqlAux)){
                                     $conn -> close();
-                                    return array("status" => "Error: Error saving trip 1");
+                                    return array("status" => "Error: Error saving trip");
                                 }
                             }
                         }
@@ -228,24 +228,24 @@
 
                                 if(!mysqli_query($conn, $sqlAux)){
                                     $conn -> close();
-                                    return array("status" => "Error: Error saving trip 2");
+                                    return array("status" => "Error: Error saving trip");
                                 }
                             }
                         }
                     }
                     else{
                         $conn -> close();
-                        return array("status" => "Error: Error saving trip 3");
+                        return array("status" => "Error: Error saving trip");
                     }
                 }
                 else{
                     $conn -> close();
-                    return array("status" => "Error: Error saving trip 4");
+                    return array("status" => "Error: Error saving trip");
                 }
             }
             else{
                 $conn -> close();
-                return array("status" => "Error: Error saving trip 5");
+                return array("status" => "Error: Error saving trip");
             }
         }
         else {
@@ -305,6 +305,30 @@
             $conn -> close();
             return array("status" => "Error: Error connecting to the database");
         }
+    }
 
+    function attemptUpdateCheckedItems($tripId, $itemList){
+        $conn = connectionToDataBase();
+
+        if ($conn != null){
+            foreach ($itemList as &$item) {
+                $itemId = $item[0];
+                $checked = $item[1];
+                
+                $sql = "UPDATE TripHasItems SET checked = '$checked' WHERE tripId = '$tripId' AND itemId = '$itemId';";
+
+                if(!mysqli_query($conn, $sql)){
+                    $conn -> close();
+                    return array("status" => "Error: Error updating database");
+                }
+            }
+
+            $conn -> close();
+            return array("status" => "SUCCESS");   
+        }
+        else {
+            $conn -> close();
+            return array("status" => "Error: Error connecting to the database");
+        }                
     }
 ?>

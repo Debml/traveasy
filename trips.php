@@ -14,6 +14,9 @@
 
         <!-- Content -->
         <main class="mdl-layout__content">
+            <div class="mdl-grid">
+            <div class="mdl-layout-spacer"></div>
+
 
             <!-- Section where trip cards are loaded -->
             <table>
@@ -42,13 +45,13 @@
                 </div>
             </div>
 
-
             <!-- Modal to load a Trip -->
             <div class="mdl-dialog" id="tripExpanded">
                 <div class="mdl-dialog__content">
                     <ul class='mdl-list' id="tripExpandedList">
                         <!-- Trip info is appended here -->
                     </ul>
+                    
                     <h4 style="text-align: center;">To-Do Checklist</h4>
                     <ul id="toDoSection">
                     </ul>
@@ -59,8 +62,8 @@
                 </div>
                 <div class="mdl-dialog__actions">
                     <button type="button" class="mdl-button closeTrip">Close</button>
-                    <button type="button" class="mdl-button closeTrip">Save</button>
-                    <button type="button" class="mdl-button closeTrip" id="suggestionsButton">Load Suggestions</button>
+                    <button type="button" class="mdl-button saveTrip">Save</button>
+                    <button type="button" class="mdl-button" id="suggestionsButton">Load Suggestions</button>
                 </div>                
             </div>
 
@@ -70,6 +73,8 @@
             </button>
 
             <div class="mdl-layout-spacer"></div>
+            </div>
+            
             <!-- Footer -->
             <?php include 'includes/footer.php';?>
         </main>

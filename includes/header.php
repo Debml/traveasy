@@ -16,7 +16,7 @@
                     echo'
                     <a class="mdl-navigation__link" href="trips.php">Trips</a>
                     <a class="mdl-navigation__link" href="checklists.php">Checklists</a>
-                    <a class="mdl-navigation__link" href="">Contact</a>
+                    <a class="mdl-navigation__link" href="contact.php">Contact</a>
                     <p class="mdl-navigation__link" id="username">' . $_SESSION["loggedUser"] . '</p>
                     <!-- Large Tooltip -->
                     <div id="ttLogout" class="icon material-icons logoutIcon">exit_to_app</div>
@@ -53,7 +53,7 @@
                 echo'
                 <a class="mdl-navigation__link" href="trips.php">Trips</a>
                 <a class="mdl-navigation__link" href="checklists.php">Checklists</a>
-                <a class="mdl-navigation__link" href="">Contact</a>';
+                <a class="mdl-navigation__link" href="contact.php">Contact</a>';
             }
             else {
                 echo'

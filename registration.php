@@ -60,12 +60,12 @@
                         </button>
                     </form>
                 </div>
+
                 <div class="mdl-layout-spacer"></div>
             </div>
         
         <!-- Header -->
         <?php include 'includes/footer.php';?>
         </main>
-    </div>
 </body>
 </html>

@@ -28,22 +28,32 @@ function loadTripDataExpanded(tripData, tripId, tripName, startDate, endDate){
     var toDoItems = 0;
     var toBringItems = 0;
 
-    htmlTag.append('<div><h2 style="text-align: center;">' + tripName + '</h2>');
+    htmlTag.append('<div><h2 style="text-align: center;" class="tripHeader" id=' + tripId +'>' + tripName + '</h2>');
     htmlTag.append('<div><h4 style="text-align: center;">' + tripLocationFormatter(tripData[0]["city"], tripData[0]["state"], tripData[0]["country"]) + '</h4>');
     htmlTag.append('<p style="text-align: center;">' + startDate + " - " + endDate + '</p></div>');
 
     $.each(tripData, function(key, value) {
         if (value["checklistType"] == "ToDo") {
             toDoItems++;
+            var checked = "";
 
-            var toDoSectionHtml = '<li style="list-style: none;"><label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="td' + value["itemId"] + '"><input type="checkbox" id="td' + value["itemId"] + '" class="mdl-checkbox__input" checked><span class="mdl-checkbox__label">' + value["itemName"] + '</span></label><p class="expandedNotes">' + value["itemNotes"] + '</p></li>'
+            if (value["checked"] == 1) {
+                checked = "checked";
+            }
+
+            var toDoSectionHtml = '<li style="list-style: none;"><label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="td' + value["itemId"] + '"><input type="checkbox" id="td' + value["itemId"] + '" class="mdl-checkbox__input checklistItemTripExpanded" ' + checked +'><span class="mdl-checkbox__label">' + value["itemName"] + '</span></label><p class="expandedNotes">' + value["itemNotes"] + '</p></li>'
             $("#toDoSection").append(toDoSectionHtml);
             componentHandler.upgradeDom();
         }
         else if (value["checklistType"] == "ToBring") {
             toBringItems++;
+            var checked = "";
+            
+            if (value["checked"] == 1) {
+                checked = "checked";
+            }
 
-            var toBringSectionHtml = '<li style="list-style: none;"><label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="td' + value["itemId"] + '"><input type="checkbox" id="td' + value["itemId"] + '" class="mdl-checkbox__input" checked><span class="mdl-checkbox__label">' + value["itemName"] + '</span></label><p class="expandedNotes">' + value["itemNotes"] + '</p></li>'
+            var toBringSectionHtml = '<li style="list-style: none;"><label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="td' + value["itemId"] + '"><input type="checkbox" id="td' + value["itemId"] + '" class="mdl-checkbox__input checklistItemTripExpanded" ' + checked +'><span class="mdl-checkbox__label">' + value["itemName"] + '</span></label><p class="expandedNotes">' + value["itemNotes"] + '</p></li>'
             $("#toBringSection").append(toBringSectionHtml);
             componentHandler.upgradeDom();
         }
@@ -106,13 +116,66 @@ $(document).ready(function() {
     });
 
     $(".closeTrip").on("click", function(event) {
+        closeExpandedTrip();  
+    });
+
+    $(".saveTrip").on("click", function(event) {
+        updateCheckboxes();
+        closeExpandedTrip();
+    });
+
+    function closeExpandedTrip(){
         $("#tripExpandedList").html(""); //resets the div
         $("#toDoSection").html(""); //resets the div
         $("#toBringSection").html(""); //resets the div
         $("#tripExpanded").hide();
         $("#tripCards").show();
-        $("#addTrip").show();            
-    });
+        $("#addTrip").show();   
+    }
+
+    function updateCheckboxes(){
+        var jsonAux = [];
+
+        $(".checklistItemTripExpanded").each(function(){
+            var checkbox = $(this).attr('id')
+
+            var arrAux = [];
+            arrAux.push(checkbox.substring(2));
+
+            if ($(this).is(":checked")) {
+                arrAux.push(1);
+            }
+            else {
+                arrAux.push(0);
+            }
+
+            jsonAux.push(arrAux);
+        });
+
+        var jsonData = {
+            "action": "UPDATECHECKBOX",
+            "tripId": $(".tripHeader").attr('id'),
+            "items": jsonAux
+        };
+
+        console.log(jsonData);
+
+        $.ajax({
+            url: "data/applicationLayer.php",
+            type: "POST",
+            data: jsonData,
+            dataType: "json",
+            contentType: "application/x-www-form-urlencoded",
+            success: function(jsonResponse) {
+                console.log("yay");
+            },
+            error: function(errorMessage) {
+                                console.log("ney");
+
+                //alert(errorMessage.responseText);
+            }
+        });
+    }
 
     function closeAddTrip() {
         $("#addTripWindow").hide();
