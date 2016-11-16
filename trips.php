@@ -13,7 +13,7 @@
         <?php include 'includes/header.php';?>
 
         <!-- Content -->
-        <main class="mdl-layout__content">
+        <main class="mdl-layout__content mdlFlex">
             <div class="mdl-grid">
             <div class="mdl-layout-spacer"></div>
 

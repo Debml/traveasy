@@ -16,11 +16,9 @@
             <div class="page-content">
 
             <!-- Section where To-Do checklist cards are loaded -->
-            <table>
-                <tr id="toDoChecklists">
+                <div id="toDoChecklists">
                     <!-- To-Do Checklist cards are appended here -->
-                </tr>
-            </table>
+                </div>
 
             <!-- Modal to add a new To-Do checklist -->
             <div class="mdl-dialog" id="toDoWindow">
@@ -72,11 +70,9 @@
             <div class="page-content">
 
                 <!-- Section where To-Bring checklist cards are loaded -->
-                <table>
-                    <tr id="toBringChecklists">
-                        <!-- To-Bring Checklist cards are appended here -->
-                    </tr>
-                </table>                  
+                <div id="toBringChecklists">
+                    <!-- To-Bring Checklist cards are appended here -->
+                </div>
                 
                 <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-button--floating-action" id="addToBring">
                 <i class="material-icons">add</i>
