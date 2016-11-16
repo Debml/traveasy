@@ -59,11 +59,14 @@
                     <h4 style="text-align: center;">Item Checklist</h4>
                     <ul id="toBringSection">
                     </ul>
+
+                    <ul id="weatherSuggestions">
+                    </ul>
                 </div>
                 <div class="mdl-dialog__actions">
                     <button type="button" class="mdl-button closeTrip">Close</button>
                     <button type="button" class="mdl-button saveTrip">Save</button>
-                    <button type="button" class="mdl-button" id="suggestionsButton">Load Suggestions</button>
+                    <button type="button" class="mdl-button getSuggestion">Load Suggestions</button>
                 </div>                
             </div>
 

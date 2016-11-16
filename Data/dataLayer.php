@@ -165,7 +165,7 @@
         $conn = connectionToDataBase();
 
         if ($conn != null){
-		    $sql = "SELECT it.* FROM ChecklistHasItems as chI, Items as it WHERE chI.checklistId = '$checklistId' AND it.id = chI.itemId ORDER BY chI.itemId DESC";
+		    $sql = "SELECT it.* FROM ChecklistHasItems as chI, Items as it WHERE chI.checklistId = '$checklistId' AND it.id = chI.itemId ORDER BY chI.itemId ASC";
 
             $result = $conn->query($sql);
 

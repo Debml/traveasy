@@ -41,6 +41,9 @@
         case "UPDATECHECKBOX":
             updateCheckedItems();
             break;
+        case "GETWEATHER":
+            getWeather();
+            break;
     }
 
     function login() {
@@ -260,4 +263,11 @@
         }
     }
 
+    function getWeather(){
+        $city = $_POST["city"];
+        $country = $_POST["country"];
+        $url = 'http://api.openweathermap.org/data/2.5/forecast?q=' . $city . ',' . $country . '&APPID=7357ef3e78c452abc9f0e009b17cba2a';
+        $json = file_get_contents($url);
+        echo json_encode($data);
+    }
 ?>

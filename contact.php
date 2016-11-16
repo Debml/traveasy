@@ -7,7 +7,6 @@
 </head>
 
 <body>
-
         <!-- Header -->
         <?php include 'includes/header.php';?>
 
