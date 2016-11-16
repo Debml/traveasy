@@ -41,7 +41,7 @@ function loadTripDataExpanded(tripData, tripId, tripName, startDate, endDate) {
                 checked = "checked";
             }
 
-            var toDoSectionHtml = '<li style="list-style: none;"><label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="td' + value["itemId"] + '"><input type="checkbox" id="td' + value["itemId"] + '" class="mdl-checkbox__input checklistItemTripExpanded" ' + checked + '><span class="mdl-checkbox__label">' + value["itemName"] + '</span></label><p class="expandedNotes">' + value["itemNotes"] + '</p></li>'
+            var toDoSectionHtml = '<li style="list-style: none;margin-top:5px;"><label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="td' + value["itemId"] + '"><input type="checkbox" id="td' + value["itemId"] + '" class="mdl-checkbox__input checklistItemTripExpanded" ' + checked + '><span class="mdl-checkbox__label">' + value["itemName"] + '</span></label><p class="expandedNotes">' + value["itemNotes"] + '</p></li>'
             $("#toDoSection").append(toDoSectionHtml);
             componentHandler.upgradeDom();
         }
@@ -53,7 +53,7 @@ function loadTripDataExpanded(tripData, tripId, tripName, startDate, endDate) {
                 checked = "checked";
             }
 
-            var toBringSectionHtml = '<li style="list-style: none;"><label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="td' + value["itemId"] + '"><input type="checkbox" id="td' + value["itemId"] + '" class="mdl-checkbox__input checklistItemTripExpanded" ' + checked + '><span class="mdl-checkbox__label">' + value["itemName"] + '</span></label><p class="expandedNotes">' + value["itemNotes"] + '</p></li>'
+            var toBringSectionHtml = '<li style="list-style: none;margin-top:5px;"><label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="td' + value["itemId"] + '"><input type="checkbox" id="td' + value["itemId"] + '" class="mdl-checkbox__input checklistItemTripExpanded" ' + checked + '><span class="mdl-checkbox__label">' + value["itemName"] + '</span></label><p class="expandedNotes">' + value["itemNotes"] + '</p></li>'
             $("#toBringSection").append(toBringSectionHtml);
             componentHandler.upgradeDom();
         }
@@ -126,6 +126,7 @@ $(document).ready(function () {
                 console.log(json["list"]);
                 weatherConditions = normalizeWeatherInfo(json["list"]);
                 addWeatherSuggestions(weatherConditions);
+                $(".weatherSuggestionsTitle").show();
             });
     });
 
@@ -224,9 +225,11 @@ $(document).ready(function () {
 
     function addSuggestedItemsToExpandedTrip(itemList) {
         var htmlTag = $("#weatherSuggestions");
+        htmlTag.html("");
         $.each(itemList, function (key, value) {
-            var newHtml = '<li class="mdl-list__item itemDetail"><i class="material-icons" style="padding-right: 10px;">radio_button_checked</i><span><span class="mdl-list__item-primary-content itemSpan"><h6>' + value + '</h6></span></li></span>'
-            htmlTag.append(newHtml);    
+            var newHtml = '<li class="mdl-list__item itemDetail"><i class="material-icons" style="padding-right: 10px;color:#4054B2">radio_button_checked</i><span><span class="mdl-list__item-primary-content itemSpan"><h6>' + value + '</h6></span></li></span>'
+            htmlTag.append(newHtml);
+            componentHandler.upgradeDom();
         });
     }
 
@@ -264,6 +267,7 @@ $(document).ready(function () {
         $("#tripExpanded").hide();
         $("#tripCards").show();
         $("#addTrip").show();
+        $(".weatherSuggestionsTitle").hide();
     }
 
     function updateCheckboxes() {
@@ -463,7 +467,7 @@ $(document).ready(function () {
     }
 
     function addTripCardToDOM(value, htmlTag, append) {
-        var card = '<td><div class="card" id="trip' + value["id"] + '"><div class="mdl-card-square mdl-card mdl-shadow--4dp"><div class="mdl-card__title mdl-card--expand"><h2 class="mdl-card__title-text title">' + value["tripName"] + '</h2></div><div class="mdl-card__supporting-text description">' + value["startDate"] + ' - ' + value["endDate"] + '</div><div class="mdl-card__actions mdl-card--border"><p class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect openTrip" id="trip' + value["id"] + '" onclick="openTripOnClick(' + value["id"] + ',\'' + value["tripName"] + '\',\'' + value["startDate"] + '\',\'' + value["endDate"] + '\')">View Trip</p></div><div class="mdl-card__menu"><button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect mdl-button--white"><i class="material-icons">edit</i></button><button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect mdl-button--white"><i class="material-icons">delete</i></button></div></div></div></td>';
+        var card = '<div class="card" id="trip' + value["id"] + '"><div class="mdl-card-square mdl-card mdl-shadow--4dp"><div class="mdl-card__title mdl-card--expand"><h2 class="mdl-card__title-text title">' + value["tripName"] + '</h2></div><div class="mdl-card__supporting-text description">' + value["startDate"] + ' - ' + value["endDate"] + '</div><div class="mdl-card__actions mdl-card--border"><p class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect openTrip" id="trip' + value["id"] + '" onclick="openTripOnClick(' + value["id"] + ',\'' + value["tripName"] + '\',\'' + value["startDate"] + '\',\'' + value["endDate"] + '\')">View Trip</p></div><div class="mdl-card__menu"><button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect mdl-button--white"><i class="material-icons">edit</i></button><button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect mdl-button--white"><i class="material-icons">delete</i></button></div></div></div>';
         if (append) {
             htmlTag.append(card);
         }

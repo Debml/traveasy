@@ -13,16 +13,14 @@
         <?php include 'includes/header.php';?>
 
         <!-- Content -->
-        <main class="mdl-layout__content mdlFlex">
+        <main class="mdl-layout__content">
             <div class="mdl-grid">
             <div class="mdl-layout-spacer"></div>
 
             <!-- Section where trip cards are loaded -->
-            <table>
-                <tr id="tripCards">
+                <div id="tripCards">
                     <!-- trip cards are appended here -->
-                </tr>
-            </table>
+                </div>
 
             <!-- Modal to add a new Trip checklist -->
             <div class="mdl-dialog" id="addTripWindow">
@@ -59,6 +57,8 @@
                     <ul id="toBringSection">
                     </ul>
 
+                    <h4 class="weatherSuggestionsTitle" style="text-align: center; display: none">Item Suggestions</h4>
+                    <p class="weatherSuggestionsTitle" style="text-align: center; display: none">Based on the weather forecast for the next 5 days, we recommend you to bring:</p>
                     <ul id="weatherSuggestions">
                     </ul>
                 </div>
