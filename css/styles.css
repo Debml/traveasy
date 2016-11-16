@@ -102,10 +102,37 @@
 	flex-direction: column;
 }
 
-.footer {
-    margin-top: 30px;
-}
-
 #toDoChecklists {
     margin: 0 auto;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+ul#developers {
+    align-items: center;
+    margin-left: -40px;
+}
+
+li {
+    list-style: none;
+}
+
+#about-container {
+    position: relative;
+    height: 75vh;
+}
+
+#about {
+    color: #fff;
+    text-align: center;
+}
+
+.aboutus {
+    font-family: "Helvetica", sans-serif;
+    font-weight: bold;
+    font-size: 1.5em;
+    line-height: 1.3em;
 }
