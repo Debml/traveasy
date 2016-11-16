@@ -102,10 +102,6 @@
 	flex-direction: column;
 }
 
-.footer {
-    margin-top: 30px;
-}
-
 #toDoChecklists, #toBringChecklists, #tripCards {
     margin: 0 auto;
 }

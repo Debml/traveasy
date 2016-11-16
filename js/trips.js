@@ -96,7 +96,7 @@ $(document).ready(function () {
     });
 
     function createAddTripModal() {
-        htmlTag = '<form  id="tripForm" action="#" class="mdl-grid"><div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"><input class="mdl-textfield__input" type="text" pattern="[A-Z, a-z, , 0-9]*" id="tripName"><label class="mdl-textfield__label" for="tripName">Name your trip</label><span class="mdl-textfield__error">Letters and spaces only</span></div><div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"><input class="mdl-textfield__input" type="text" pattern="[A-Z, a-z, ]*" id="city"><label class="mdl-textfield__label" for="city">City</label><span class="mdl-textfield__error">Letters and spaces only</span></div><div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"><input class="mdl-textfield__input" type="text" pattern="[A-Z, a-z, ]*" id="state"><label class="mdl-textfield__label" for="state">State</label><span class="mdl-textfield__error">Letters and spaces only</span></div><div id="select_country" class="mdl-selectfield mdl-js-selectfield mdl-textfield--floating-label"><select id="country" name="country" class="mdl-selectfield__select" required><option value=""></option></select><label for="country" class="mdl-selectfield__label">Country</label><span class="mdl-selectfield__error">Please select your country</span></div><div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"><input class="mdl-textfield__input" type="text" id="startDate"><label class="mdl-textfield__label" for="startDate">Start Date (MM/DD/YYYY)</label><span class="mdl-textfield__error">MM/DD/YYYY</span></div><div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"><input class="mdl-textfield__input" type="text" id="endDate"><label class="mdl-textfield__label" for="endDate">End Date (MM/DD/YYYY)</label><span class="mdl-textfield__error">MM/DD/YYYY</span></div><div id="select_toDoOptions" class="mdl-selectfield mdl-js-selectfield mdl-textfield--floating-label"><select id="toDoOptions" name="toDoOptions" class="mdl-selectfield__select"><option value=""></option></select><label for="toDoOptions" class="mdl-selectfield__label">Select a To Do list (optional)</label></div><div id="select_toBringOptions" class="mdl-selectfield mdl-js-selectfield mdl-textfield--floating-label"><select id="toBringOptions" name="toBringOptions" class="mdl-selectfield__select"><option value=""></option></select><label for="toBringOptions" class="mdl-selectfield__label">Select an Item list (optional)</label></div></form>';
+        htmlTag = '<form id="tripForm" action="#" class="mdl-grid"><div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"><input class="mdl-textfield__input" type="text" pattern="[A-Z, a-z, , 0-9]*" id="tripName"><label class="mdl-textfield__label" for="tripName">Name your trip</label><span class="mdl-textfield__error">Letters and spaces only</span></div><div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"><input class="mdl-textfield__input" type="text" pattern="[A-Z, a-z, ]*" id="city"><label class="mdl-textfield__label" for="city">City</label><span class="mdl-textfield__error">Letters and spaces only</span></div><div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"><input class="mdl-textfield__input" type="text" pattern="[A-Z, a-z, ]*" id="state"><label class="mdl-textfield__label" for="state">State (Optional)</label><span class="mdl-textfield__error">Letters and spaces only</span></div><div id="select_country" class="mdl-selectfield mdl-js-selectfield mdl-textfield--floating-label"><select id="country" name="country" class="mdl-selectfield__select" required><option value=""></option></select><label for="country" class="mdl-selectfield__label">Country</label><span class="mdl-selectfield__error">Please select your country</span></div><div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"><input class="mdl-textfield__input" type="text" id="startDate" pattern="[0-1][1-9][/][0-3][1-9][/][0-9][0-9][0-9][0-9]"><label class="mdl-textfield__label" for="startDate">Start Date (MM/DD/YYYY)</label><span class="mdl-textfield__error">MM/DD/YYYY</span></div><div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"><input class="mdl-textfield__input" type="text" id="endDate" pattern="[0-1][1-9][/][0-3][1-9][/][0-9][0-9][0-9][0-9]"><label class="mdl-textfield__label" for="endDate">End Date (MM/DD/YYYY)</label><span class="mdl-textfield__error">MM/DD/YYYY</span></div><div id="select_toDoOptions" class="mdl-selectfield mdl-js-selectfield mdl-textfield--floating-label"><select id="toDoOptions" name="toDoOptions" class="mdl-selectfield__select"><option value=""></option></select><label for="toDoOptions" class="mdl-selectfield__label">Select a To Do list (optional)</label></div><div id="select_toBringOptions" class="mdl-selectfield mdl-js-selectfield mdl-textfield--floating-label"><select id="toBringOptions" name="toBringOptions" class="mdl-selectfield__select"><option value=""></option></select><label for="toBringOptions" class="mdl-selectfield__label">Select an Item list (optional)</label></div></form>';
 
         $("#tripForm").append(htmlTag);
         loadAllChecklists();
@@ -106,7 +106,6 @@ $(document).ready(function () {
 
     $("#saveTrip").on("click", function () {
         saveTrip();
-        closeAddTrip();
         $('.mdl-tooltip.is-active').removeClass('is-active');
     });
 
@@ -400,41 +399,77 @@ $(document).ready(function () {
     }
 
     function saveTrip() {
-        var jsonData = {
-            "action": "SAVETRIP",
-            "username": $("#username").html(),
-            "tripName": $("#tripName").val(),
-            "city": $("#city").val(),
-            "state": $("#state").val(),
-            "country": $("#country :selected").text(),
-            "startDate": $("#startDate").val(),
-            "endDate": $("#endDate").val(),
-            "toDoList": $("#toDoOptions").val(),
-            "toBringList": $("#toBringOptions").val()
-        };
+        var valid = true;
+        var errorFeedback = "";
 
-        $.ajax({
-            url: "data/applicationLayer.php",
-            type: "POST",
-            data: jsonData,
-            dataType: "json",
-            contentType: "application/x-www-form-urlencoded",
-            success: function (jsonResponse) {
-                var newCardData = {
-                    "id": jsonResponse["tripId"],
-                    "tripName": jsonData["tripName"],
-                    "startDate": jsonData["startDate"],
-                    "endDate": jsonData["endDate"]
+        //check for valid values
+        if ($("#tripName").parent().hasClass("is-invalid") || $("#tripName").val() == "") {
+			errorFeedback += "Enter a valid trip name. \n";
+			valid = false;
+        }
+        if ($("#city").parent().hasClass("is-invalid") || $("#city").val() == "") {
+			errorFeedback += "Enter a valid city. \n";
+			valid = false;
+        }
+        if ($("#state").parent().hasClass("is-invalid")) {
+			errorFeedback += "Enter a valid state. \n";
+			valid = false;
+        }
+        if ($("#country").val() == "") {
+			errorFeedback += "Enter a valid country. \n";
+			valid = false;
+        }
+        if ($("#startDate").val() == "" || $("#startDate").parent().hasClass("is-invalid")) {
+			errorFeedback += "Enter a valid start date. \n";
+			valid = false;
+        }
+        if ($("#endDate").val() == "" || $("#startDate").parent().hasClass("is-invalid")) {
+			errorFeedback += "Enter a valid end date. \n";
+			valid = false;
+        }
+
+        if (valid) {
+            var jsonData = {
+                "action": "SAVETRIP",
+                "username": $("#username").html(),
+                "tripName": $("#tripName").val(),
+                "city": $("#city").val(),
+                "state": $("#state").val(),
+                "country": $("#country :selected").text(),
+                "startDate": $("#startDate").val(),
+                "endDate": $("#endDate").val(),
+                "toDoList": $("#toDoOptions").val(),
+                "toBringList": $("#toBringOptions").val()
+            };
+
+            $.ajax({
+                url: "data/applicationLayer.php",
+                type: "POST",
+                data: jsonData,
+                dataType: "json",
+                contentType: "application/x-www-form-urlencoded",
+                success: function (jsonResponse) {
+                    var newCardData = {
+                        "id": jsonResponse["tripId"],
+                        "tripName": jsonData["tripName"],
+                        "startDate": jsonData["startDate"],
+                        "endDate": jsonData["endDate"]
+                    }
+
+                    addTripCardToDOM(newCardData, $("#tripCards"), false);
+                    closeAddTrip();
+                    componentHandler.upgradeDom();
+                },
+                error: function (errorMessage) {
+                    alert(errorMessage);
                 }
+            });
 
-                addTripCardToDOM(newCardData, $("#tripCards"), false);
-                closeAddTrip();
-                componentHandler.upgradeDom();
-            },
-            error: function (errorMessage) {
-                alert(errorMessage);
-            }
-        });
+            closeAddTrip();
+        }
+        else {
+            alert("Please fix these mistakes: \n" + errorFeedback);
+        }
     }
 
     function loadTrips() {
