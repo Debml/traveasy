@@ -17,13 +17,13 @@
                 <div class="mdl-cell mdl-cell--4-col">
                     <form class="coloredBorder">
                         <h3>Register</h3>
-                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <div  id="tf-fName" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                             <input class="mdl-textfield__input" type="text" pattern="[A-Z, a-z, ]*" id="firstName">
                             <label class="mdl-textfield__label" for="firstName">First Name</label>
                             <span class="mdl-textfield__error">Letters and spaces only</span>
                         </div><br>
 
-                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <div  id="tf-lName" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                             <input class="mdl-textfield__input" type="text" pattern="[A-Z, a-z, ]*" id="lastName">
                             <label class="mdl-textfield__label" for="lastName">Last Name</label>
                             <span class="mdl-textfield__error">Letters and spaces only</span>
@@ -48,7 +48,7 @@
                             <span class="mdl-textfield__error">Letters, numbers, '#', '-' and '_' only</span>                            
                         </div><br>
 
-                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <div  id="tf-email" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                             <input class="mdl-textfield__input" type="email" id="email">
                             <label class="mdl-textfield__label" for="email">Email</label>
                             <span class="mdl-textfield__error">Please enter a valid email address</span>                                                        

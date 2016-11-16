@@ -17,7 +17,6 @@
             <div class="mdl-grid">
             <div class="mdl-layout-spacer"></div>
 
-
             <!-- Section where trip cards are loaded -->
             <table>
                 <tr id="tripCards">

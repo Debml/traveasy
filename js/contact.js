@@ -25,6 +25,5 @@ $(document).ready(function(){
 		else {
 			alert("Please fix these mistakes: \n" + errorFeedback);
 		}
-		
 	});
 });

@@ -1,6 +1,19 @@
 $(document).ready(function () {
     $("#loginButton").on("click", function () {
-        login();
+        var valid = true;
+        var errorFeedback = "";
+
+        if ($("#username").val() == "" || $("#password").val() == "" ) {
+            errorFeedback += "Please enter your username and password";
+			valid = false;
+        }
+
+        if (valid) {
+            login();
+		}
+		else {
+			alert(errorFeedback);
+		}
     });
 });
 
@@ -21,7 +34,7 @@ function login() {
             window.location.replace("index.php");
         },
         error: function (errorMessage) {
-            alert(errorMessage);
+            alert("Wrong credentials. Try again.");
         }
     });
 }

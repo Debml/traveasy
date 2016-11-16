@@ -1,12 +1,37 @@
 $(document).ready(function () {
     $("#registerButton").on("click", function () {
-        //password and confirm password fields match
-        if ($("#password").val() == $("#confirmPassword").val()) {
-            registerToDatabase();
+        var valid = true;
+        var errorFeedback = "";
+
+        if ($("#firstName").val() == "" || $("#lastName").val() == "" || $("#username").val() == "" || $("#password").val() == "" || $("#confirmPassword").val() == "" || $("#email").val() == "") {
+            alert("Please fill out all fields");
         }
         else {
-            //PENDING
-            //comment that passwords are not the same
+            if ($("#tf-fName").hasClass("is-invalid")) {
+                errorFeedback += "Enter a valid first name. \n";
+                valid = false;
+            }
+            if ($("#tf-lName").hasClass("is-invalid")) {
+                errorFeedback += "Enter a valid last name. \n";
+                valid = false;
+            }
+            if ($("#tf-email").hasClass("is-invalid")) {
+                errorFeedback += "Enter a valid email. \n";
+                valid = false;
+            }
+
+            if (valid) {
+                //password and confirm password fields match
+                if ($("#password").val() == $("#confirmPassword").val()) {
+                    registerToDatabase();
+                }
+                else {
+                    alert("Passwords don't match. Try again!");
+                }
+            }
+            else {
+			    alert("Please fix these mistakes: \n" + errorFeedback);
+            }
         }
 
         function registerToDatabase() {
