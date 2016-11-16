@@ -11,7 +11,7 @@
 
         <!-- Content -->
         <main class="mdl-layout__content">
-            <img src="images/vancouver.png" style="margin-bottom: -30px;">
+            <img src="images/vancouver.png">
 
         <!-- Footer -->
         <?php include 'includes/footer.php';?>
