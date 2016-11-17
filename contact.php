@@ -37,7 +37,7 @@
                             <label class="mdl-textfield__label" for="message">Your message:</label>
                             <span class="mdl-textfield__error">Please enter a message.</span> 
                         </div>
-                        <button id="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+                        <button id="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
                             Send Email
                         </button>
                     </form>

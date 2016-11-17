@@ -14,9 +14,10 @@
                 session_start();
                 if (isset($_SESSION["loggedUser"])) { 
                     echo'
-                    <a class="mdl-navigation__link" href="trips.php">Trips</a>
-                    <a class="mdl-navigation__link" href="checklists.php">Checklists</a>
-                    <a class="mdl-navigation__link" href="contact.php">Contact</a>
+                    <a class="mdl-navigation__link" href="checklists.php">My Checklists</a>
+                    <a class="mdl-navigation__link" href="trips.php">My Trips</a>
+                    <a class="mdl-navigation__link" href="about.php">About Us</a>
+                    <a class="mdl-navigation__link" href="contact.php">Contact Us</a>
                     <p class="mdl-navigation__link" id="username">' . $_SESSION["loggedUser"] . '</p>
                     <!-- Large Tooltip -->
                     <div id="ttLogout" class="icon material-icons logoutIcon">exit_to_app</div>
@@ -26,6 +27,8 @@
                 }
                 else {
                     echo'
+                    <a class="mdl-navigation__link" href="about.php">About Us</a>
+                    <a class="mdl-navigation__link" href="contact.php">Contact Us</a>
                     <a class="mdl-navigation__link" href="registration.php">Sign Up</a>
                     <a class="mdl-navigation__link" href="login.php">Login</a>';
                 }
@@ -51,12 +54,15 @@
 
             if (isset($_SESSION["loggedUser"])) { 
                 echo'
-                <a class="mdl-navigation__link" href="trips.php">Trips</a>
-                <a class="mdl-navigation__link" href="checklists.php">Checklists</a>
-                <a class="mdl-navigation__link" href="contact.php">Contact</a>';
+                <a class="mdl-navigation__link" href="checklists.php">My Checklists</a>
+                <a class="mdl-navigation__link" href="trips.php">My Trips</a>
+                <a class="mdl-navigation__link" href="about.php">About Us</a>
+                <a class="mdl-navigation__link" href="contact.php">Contact Us</a>';
             }
             else {
                 echo'
+                <a class="mdl-navigation__link" href="about.php">About Us</a>
+                <a class="mdl-navigation__link" href="contact.php">Contact Us</a>
                 <a class="mdl-navigation__link" href="registration.php">Sign Up</a>
                 <a class="mdl-navigation__link" href="login.php">Login</a>';
                 }
