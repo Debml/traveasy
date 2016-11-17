@@ -68,6 +68,10 @@
     padding-top: 0px;
 }
 
+.mdl-dialog__actions {
+    margin-bottom: 20px;
+}
+
 .expandedNotes {
     margin-bottom: 0px;
     color: rgba(0,0,0,.54);
@@ -135,4 +139,10 @@ li {
     font-weight: bold;
     font-size: 1.5em;
     line-height: 1.3em;
+}
+
+#emptyAList, #emptyIList, #emptyTList {
+    vertical-align: middle;
+    line-height: 200px;
+    text-align: center;
 }

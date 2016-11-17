@@ -13,14 +13,14 @@
         <?php include 'includes/header.php';?>
 
         <!-- Content -->
-        <main class="mdl-layout__content">
-            <div class="mdl-grid">
-            <div class="mdl-layout-spacer"></div>
+        <main class="mdl-layout__content mdlFlex">
+            <section class="mdl-layout__tab-panel is-active" id="fixed-tab-1">
+            <div class="page-content">
 
+            <h3 id="emptyTList">Looks like you don't have any Trips!</h3>
             <!-- Section where trip cards are loaded -->
-                <div id="tripCards">
-                    <!-- trip cards are appended here -->
-                </div>
+            <!-- trip cards are appended here -->
+            <div id="tripCards"></div>
 
             <!-- Modal to add a new Trip checklist -->
             <div class="mdl-dialog" id="addTripWindow">
@@ -74,9 +74,10 @@
             <i class="material-icons">add</i>
             </button>
 
-            <div class="mdl-layout-spacer"></div>
             </div>
+        </section>
             
+            <div class="mdl-layout-spacer"></div>
             <!-- Footer -->
             <?php include 'includes/footer.php';?>
         </main>

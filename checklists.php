@@ -15,10 +15,10 @@
         <section class="mdl-layout__tab-panel is-active" id="fixed-tab-1">
             <div class="page-content">
 
+            <h3 id="emptyAList">Looks like you don't have any To-Do Checklists!</h3>
             <!-- Section where To-Do checklist cards are loaded -->
-                <div id="toDoChecklists">
-                    <!-- To-Do Checklist cards are appended here -->
-                </div>
+            <!-- To-Do Checklist cards are appended here -->
+            <div id="toDoChecklists"></div>
 
             <!-- Modal to add a new To-Do checklist -->
             <div class="mdl-dialog" id="toDoWindow">
@@ -69,10 +69,10 @@
         <section class="mdl-layout__tab-panel" id="fixed-tab-2">
             <div class="page-content">
 
+                <h3 id="emptyIList">Looks like you don't have any Item Checklists!</h3>
                 <!-- Section where To-Bring checklist cards are loaded -->
-                <div id="toBringChecklists">
-                    <!-- To-Bring Checklist cards are appended here -->
-                </div>
+                <!-- To-Bring Checklist cards are appended here -->
+                <div id="toBringChecklists"></div>
                 
                 <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-button--floating-action" id="addToBring">
                 <i class="material-icons">add</i>
@@ -100,7 +100,7 @@
 
                     <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" id="closeToBring">
                     <i class="material-icons">clear</i>
-                    <div class="mdl-tooltip" data-mdl-for="closeToDo">Discard checklist</div>
+                    <div class="mdl-tooltip" data-mdl-for="closeToBring">Discard checklist</div>
                     </button>
                 </div>
             </div>

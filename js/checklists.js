@@ -29,7 +29,7 @@ function loadToDoDataExpanded(itemsToLoad, checklistName, checklistDescription) 
     htmlTag.append('<p style="text-align: center;">' + checklistDescription + '</p></div>');
 
     $.each(itemsToLoad, function (key, value) {
-        var cardHtml = '<li class="mdl-list__item itemDetail"><i class="material-icons" style="padding-right: 10px;">radio_button_checked</i><span><span class="mdl-list__item-primary-content itemSpan"><h6>' + value["itemName"] + '</h6></span><p class="expandedNotes">' + value["notes"] + '</p></li></span>'
+        var cardHtml = '<li class="mdl-list__item itemDetail"><i class="material-icons" style="padding-right: 10px;color:#4054B2">radio_button_checked</i><span><span class="mdl-list__item-primary-content itemSpan"><h6>' + value["itemName"] + '</h6></span><p class="expandedNotes">' + value["notes"] + '</p></li></span>'
         htmlTag.append(cardHtml);
     });
 
@@ -69,7 +69,7 @@ function loadToBringDataExpanded(itemsToLoad, checklistName, checklistDescriptio
     htmlTag.append('<p style="text-align: center;">' + checklistDescription + '</p>');
 
     $.each(itemsToLoad, function (key, value) {
-        var cardHtml = '<li class="mdl-list__item itemDetail"><i class="material-icons" style="padding-right: 10px;">radio_button_checked</i><span><span class="mdl-list__item-primary-content itemSpan"><h6>' + value["itemName"] + '</h6></span><p class="expandedNotes">' + value["notes"] + '</p></li></span>'
+        var cardHtml = '<li class="mdl-list__item itemDetail"><i class="material-icons" style="padding-right: 10px;color:#4054B2">radio_button_checked</i><span><span class="mdl-list__item-primary-content itemSpan"><h6>' + value["itemName"] + '</h6></span><p class="expandedNotes">' + value["notes"] + '</p></li></span>'
         htmlTag.append(cardHtml);
     });
 
@@ -90,6 +90,7 @@ $(document).ready(function () {
         addActivity();
         $("#toDoChecklists").hide();
         $("#addToDo").hide();
+        $("#emptyAList").hide();
         $("#toDoWindow").show();
     });
 
@@ -245,6 +246,7 @@ $(document).ready(function () {
     }
 
     function addToDoCardToDOM(value, htmlTag, append) {
+        $("#emptyAList").hide();
         var card = '<div class="card" id="tdc' + value["id"] + '" style="margin: 0 auto;"><div class="mdl-card-square mdl-card mdl-shadow--4dp"><div class="mdl-card__title mdl-card--expand"><h2 class="mdl-card__title-text title">' + value["checklistName"] + '</h2></div><div class="mdl-card__supporting-text description">' + value["checklistDescription"] + '</div><div class="mdl-card__actions mdl-card--border"><p class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect openToDoChecklist" id="tdco' + value["id"] + '" onclick="openToDoOnClick(' + value["id"] + ',\'' + value["checklistName"] + '\',\'' + value["checklistDescription"] + '\')">Open Checklist</p></div><div class="mdl-card__menu"><button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect mdl-button--white"><i class="material-icons">edit</i></button><button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect mdl-button--white"><i class="material-icons">delete</i></button></div></div></div>';
         if (append) {
             htmlTag.append(card);
@@ -258,6 +260,10 @@ $(document).ready(function () {
         $("#toDoWindow").hide();
         $("#addToDo").show();
         $("#toDoChecklists").show();
+        console.log($("#toDoChecklists").html());
+        if ($("#toDoChecklists").html() == "") {
+            $("#emptyAList").show();
+        }
         resetChecklist();
     }
 
@@ -265,6 +271,9 @@ $(document).ready(function () {
         $("#toDoWindow").hide();
         $("#addToDo").show();
         $("#toDoChecklists").show();
+        if ($("#toDoChecklists").html() == "") {
+            $("#emptyAList").show();
+        }
         resetChecklist();
     }
 
@@ -286,6 +295,7 @@ $(document).ready(function () {
         addItem();
         $("#toBringChecklists").hide();
         $("#addToBring").hide();
+        $("#emptyIList").hide();
         $("#toBringWindow").show();
     });
 
@@ -413,6 +423,9 @@ $(document).ready(function () {
         $("#toBringWindow").hide();
         $("#addToBring").show();
         $("#toBringChecklists").show();
+        if ($("#toBringChecklists").html() == "") {
+            $("#emptyIList").show();
+        }
         resetChecklist();
     }
 
@@ -420,6 +433,9 @@ $(document).ready(function () {
         $("#toBringWindow").hide();
         $("#addToBring").hide();
         $("#toBringChecklists").show();
+        if ($("#toBringChecklists").html() == "") {
+            $("#emptyIList").show();
+        }
         resetChecklist();
     }
 
@@ -454,6 +470,7 @@ $(document).ready(function () {
     }
 
     function addToBringCardToDOM(value, htmlTag, append) {
+        $("#emptyIList").hide();
         var card = '<div class="card" id="tbc' + value["id"] + '" style="margin: 0 auto;"><div class="mdl-card-square mdl-card mdl-shadow--4dp"><div class="mdl-card__title mdl-card--expand"><h2 class="mdl-card__title-text title">' + value["checklistName"] + '</h2></div><div class="mdl-card__supporting-text description">' + value["checklistDescription"] + '</div><div class="mdl-card__actions mdl-card--border"><p class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect openToBringChecklist" id="tbco' + value["id"] + '" onclick="openToBringOnClick(' + value["id"] + ',\'' + value["checklistName"] + '\',\'' + value["checklistDescription"] + '\')">Open Checklist</p></div><div class="mdl-card__menu"><button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect mdl-button--white"><i class="material-icons">edit</i></button><button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect mdl-button--white"><i class="material-icons">delete</i></button></div></div></div>';
 
         if (append) {
