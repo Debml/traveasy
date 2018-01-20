@@ -13,3 +13,8 @@
 //= require rails-ujs
 //= require turbolinks
 //= require_tree .
+//= require material
+
+document.addEventListener('turbolinks:load', function() {
+    componentHandler.upgradeDom();
+});
