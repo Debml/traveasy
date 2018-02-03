@@ -9,8 +9,19 @@
   </head>
 
   <body>
-    <%= javascript_pack_tag 'navigation' %>
-    <%= yield %>
-    <%= javascript_pack_tag 'footer' %>
+    <div id="bodiv" className="mdl-layout mdl-layout--no-desktop-drawer-button mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-tabs">
+      <%= javascript_pack_tag 'navigation' %>
+      
+      <% if notice %>
+        <p class="alert alert-success"><%= notice %></p>
+      <% end %>
+      <% if alert %>
+        <p class="alert alert-danger"><%= alert %></p>
+      <% end %>
+      
+      <%= yield %>
+      
+      <%= javascript_pack_tag 'footer' %>
+    </div>
   </body>
 </html>

@@ -57,3 +57,6 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # Material Design Lite
 gem 'material_design_lite-sass'
+
+# Use Devise for authentication
+gem 'devise'
