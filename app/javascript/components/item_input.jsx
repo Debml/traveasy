@@ -14,7 +14,7 @@ export default class ItemInput extends React.Component {
             <div>
                 <div className="mdl-textfield mdl-js-textfield">
                     <input className="mdl-textfield__input" type="text" id={"item_name_"+this.props.index} onChange={this.saveItem.bind(this)}/>
-                    <label className="mdl-textfield__label" htmlFor={"item_name_"+this.props.index}>{this.props.index}</label>
+                    <label className="mdl-textfield__label" htmlFor={"item_name_"+this.props.index}>{this.props.placeholder}</label>
                 </div>
                 
                 {/**<div className="mdl-textfield mdl-js-textfield">

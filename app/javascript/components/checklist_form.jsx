@@ -7,47 +7,42 @@ export default class ChecklistForm extends React.Component {
     constructor(props) {
         super(props);
         
-        this.state = {
-            itemsComponents: [ItemInput],
-            itemsInfo: [{}]
-        };
+        {/*Set itemsInfo with one empty item to always have at least one input*/}
+        this.state = {itemsInfo: [{}]};
         
-        this.discardForm = this.discardForm.bind(this);
-        this.addItemInput = this.addItemInput.bind(this);
+        this.resetForm = this.resetForm.bind(this);
+        this.addItem = this.addItem.bind(this);
         this.saveChecklist = this.saveChecklist.bind(this);
         this.appendItemInfo = this.appendItemInfo.bind(this);
     }
     
-    discardForm() {
-        this.setState({
-            itemsComponents: [ItemInput],
-            itemsInfo: [{}]
-        }, this.props.onClose);
+    resetForm() {
+        {/*Set itemsInfo with one empty item to always have at least one input*/}
+        this.setState({itemsInfo: [{}]}, this.props.onClose);
     }
     
-    addItemInput() {
-        const itemsComponents = this.state.itemsComponents.concat(ItemInput);
-        this.setState({
-            itemsComponents
-        });
+    addItem() {
+        this.setState({itemsInfo: [...this.state.itemsInfo, {}]});
     }
     
     appendItemInfo(newItemInfo, index) {
         var itemsInfo = this.state.itemsInfo;
         itemsInfo[index] = newItemInfo
         
-        this.setState({ 
-            itemsInfo 
-        });
+        this.setState({itemsInfo});
     }
     
     saveChecklist() {
+        const that = this
+        const checklist_name = document.getElementById("checklist_name").value
+        const checklist_description = document.getElementById("checklist_description").value
+        
         axios({
             method: 'POST',
             url: '/checklists',
             data: {checklist: {
-                name: document.getElementById("checklist_name").value,
-                description: document.getElementById("checklist_description").value,
+                name: checklist_name,
+                description: checklist_description,
                 checklist_type: 1,
                 items: this.state.itemsInfo
             }},
@@ -56,7 +51,14 @@ export default class ChecklistForm extends React.Component {
             }
         })
         .then(function(response){
-            console.log("SAVED")
+            const new_checklist = {
+                id: response.data.checklist_id,
+                name: checklist_name,
+                description: checklist_description
+            }
+            
+            that.resetForm()
+            that.props.onSave(new_checklist)
         })
     }
     
@@ -65,48 +67,50 @@ export default class ChecklistForm extends React.Component {
             return null;
         }
         
-        const items = this.state.itemsComponents.map((Element, index) => {
-            return <Element key={index} index={index} handleChange={this.appendItemInfo}/>
+        const items = this.state.itemsInfo.map((itemData, index) => {
+            return <ItemInput key={index} index={index} placeholder={"Item #" + (index+1)} handleChange={this.appendItemInfo}/>
         });
         
         return (
-            <div className="mdl-dialog" id="toDoWindow">
-                <h4 className="mdl-dialog__title">New To-Do List</h4>
-                
-                <div className="mdl-dialog__content">
-                    <form id="checklist_form">
-                        <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input className="mdl-textfield__input" type="text" id="checklist_name" required/>
-                            <label className="mdl-textfield__label" htmlFor="checklist_name">Name your checklist</label>
-                        </div>
-                        
-                        <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input className="mdl-textfield__input" type="text" id="checklist_description" required/>
-                            <label className="mdl-textfield__label" htmlFor="checklist_description">Type a small description for your checklist</label>
-                        </div>
-                        
-                        <div className="items">
-                            {items}
-                        </div>
-                        
-                    </form>
-                </div>
-                
-                <div className="mdl-dialog__actions">
-                    <button className="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" id="save_checklist" onClick={this.saveChecklist}>
-                        <i className="material-icons">done</i>
-                        <div className="mdl-tooltip" data-mdl-for="save_checklist">Save checklist</div>
-                    </button>
+            <div className="modal-backdrop">
+                <div className="modal-container">
+                    <h4 className="mdl-dialog__title">New checklist</h4>
+                    
+                    <div className="mdl-dialog__content">
+                        <form id="checklist_form">
+                            <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <input className="mdl-textfield__input" type="text" id="checklist_name" required/>
+                                <label className="mdl-textfield__label" htmlFor="checklist_name">Name your checklist</label>
+                            </div>
+                            
+                            <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <input className="mdl-textfield__input" type="text" id="checklist_description" required/>
+                                <label className="mdl-textfield__label" htmlFor="checklist_description">Type a small description for your checklist</label>
+                            </div>
+                            
+                            <div className="items">
+                                {items}
+                            </div>
+                            
+                        </form>
+                    </div>
+                    
+                    <div className="mdl-dialog__actions">
+                        <button className="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" id="save_checklist" onClick={this.saveChecklist}>
+                            <i className="material-icons">done</i>
+                            <div className="mdl-tooltip" data-mdl-for="save_checklist">Save checklist</div>
+                        </button>
 
-                    <button className="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" id="add_item" onClick={this.addItemInput}>
-                        <i className="material-icons">add</i>
-                        <div className="mdl-tooltip" data-mdl-for="add_item">Add activity</div>
-                    </button>
+                        <button className="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" id="add_item" onClick={this.addItem}>
+                            <i className="material-icons">add</i>
+                            <div className="mdl-tooltip" data-mdl-for="add_item">Add activity</div>
+                        </button>
 
-                    <button className="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" id="discard_checklist" onClick={this.discardForm}>
-                        <i className="material-icons">clear</i>
-                        <div className="mdl-tooltip" data-mdl-for="discard_checklist">Discard checklist</div>
-                    </button>
+                        <button className="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" id="discard_checklist" onClick={this.resetForm}>
+                            <i className="material-icons">clear</i>
+                            <div className="mdl-tooltip" data-mdl-for="discard_checklist">Discard checklist</div>
+                        </button>
+                    </div>
                 </div>
             </div>
         );

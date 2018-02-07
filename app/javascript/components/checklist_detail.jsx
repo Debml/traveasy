@@ -8,7 +8,8 @@ export default class ChecklistDetail extends React.Component {
         super(props);
         
         this.state = {
-            items: []
+            items: [],
+            checklistData: {}
         };
     }
 
@@ -22,13 +23,13 @@ export default class ChecklistDetail extends React.Component {
         
             axios({
                 method: 'GET',
-                url: '/items/' + nextProps.checklistId
+                url: '/checklists/' + nextProps.checklistId
             })
             .then(function(response){
                 const items = response.data.items
-                that.setState({
-                    items
-                });
+                const checklistData = response.data.checklist[0]
+                
+                that.setState({items, checklistData});
             })
         }
     }
@@ -43,14 +44,21 @@ export default class ChecklistDetail extends React.Component {
         });
         
         return (
-            <div className="mdl-dialog">
-                <div className="mdl-dialog__content">
-                    <ul className="mdl-list">
-                        {items}
-                    </ul>
-                </div>
-                <div className="mdl-dialog__actions">
-                    <button type="button" className="mdl-button closeToBringChecklist" onClick={this.props.onClose}>Close</button>
+            <div className="modal-backdrop">
+                <div className="modal-container">
+                    <div className="mdl-dialog__content">
+                        <div className="detail-title">
+                            <h2>{this.state.checklistData.name}</h2>
+                            <p>{this.state.checklistData.description}</p>
+                        </div>
+                    
+                        <ul className="mdl-list">
+                            {items}
+                        </ul>
+                    </div>
+                    <div className="mdl-dialog__actions">
+                        <button type="button" className="mdl-button closeToBringChecklist" onClick={this.props.onClose}>Close</button>
+                    </div>
                 </div>
             </div>
         );

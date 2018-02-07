@@ -18,9 +18,10 @@ export default class ChecklistTypeView extends React.Component {
         
         this.setModalOpen = this.setModalOpen.bind(this)
         this.openForm = this.openForm.bind(this)
-        this.openDetail = this.openDetail.bind(this)
         this.closeForm = this.closeForm.bind(this)
+        this.openDetail = this.openDetail.bind(this)
         this.closeDetail = this.closeDetail.bind(this)
+        this.updateChecklist = this.updateChecklist.bind(this)
     }
     
     setModalOpen(modalKey, modalVal) {
@@ -41,42 +42,45 @@ export default class ChecklistTypeView extends React.Component {
         this.setModalOpen("detailOpen", false)
     }
     
+    updateChecklist(checklistData) {
+        this.setState({checklists: [checklistData, ...this.state.checklists]});
+        this.closeForm()
+    }
+    
     componentDidMount() {
         let that = this;
         
         axios({
             method: 'GET',
-            url: '/checklists/get_checklists',
-            headers: {
-                'X-CSRF-Token': document.querySelector("meta[name=csrf-token]").content
-            }
+            url: '/checklists/get_checklists'
         })
         .then(function(response){
             const checklists = response.data.checklists
-            that.setState({
-                checklists
-            });
+            that.setState({checklists});
         })
     }
     
     render() {
         const cards = this.state.checklists.map((checklistData, index) => {
-            return <ChecklistCard key={index} checklistId={checklistData.id} name={checklistData.name} description={checklistData.description} onOpen={this.openDetail}/>
+            return <ChecklistCard 
+                        key={index}
+                        checklistId={checklistData.id}
+                        name={checklistData.name}
+                        description={checklistData.description}
+                        onOpen={this.openDetail}/>
         });
         
         return (
             <div className="page-content">
             
-                <h3>Looks like you don't have any checklists!</h3>
-                
-                <div id="checklists">
+                <div className="mdl-grid">
                     {cards}
                 </div>
                 
-                <ChecklistForm show={this.state.formOpen} onClose={this.closeForm}/>
+                <ChecklistForm show={this.state.formOpen} onClose={this.closeForm} onSave={this.updateChecklist}/>
                 <ChecklistDetail show={this.state.detailOpen} checklistId={this.state.openedChecklist} onClose={this.closeDetail}/>
 
-                <button className="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-button--floating-action" onClick={this.openForm}>
+                <button className="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-button--floating-action mdl-button-corner" onClick={this.openForm}>
                     <i className="material-icons">add</i>
                 </button>
             </div>

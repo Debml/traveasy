@@ -4,17 +4,6 @@ import axios from 'axios'
 export default class Registration extends React.Component {
     
     registerUser() {
-        /**axios.post('/users', {
-            user: {
-                email: document.getElementById("email").value,
-                password: document.getElementById("password").value,
-                password_confirmation: document.getElementById("password_confirmation").value
-            }
-        })
-        .then(function(response){
-            console.log("posted")
-        })**/
-        
         axios({
             method: 'POST',
             url: '/users',
