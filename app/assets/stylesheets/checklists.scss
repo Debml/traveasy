@@ -11,6 +11,14 @@ $custom_red: #ff5252;
     background-color: $custom_red
 }
 
+.mdl-card__menu .material-icons {
+    color: white;
+}
+
+.mdl-card__menu .material-icons:first-child {
+    margin-right: 5px;
+}
+
 .mdl-button-corner {
     position: fixed;
     right: 24px;
@@ -40,27 +48,62 @@ $custom_red: #ff5252;
     border-radius: 10px;
 }
 
-.detail-title {
-    text-align: center;
-}
-
 .mdl-list__item {
     padding: 0px;
     margin: 15px;
-    max-height: 24px;
-    min-height: 24px !important; /*Used to override mdl-list__item min-height*/
+    max-height: 34px;
+    min-height: 34px !important; //Used to override mdl-list__item min-height
+}
+
+.custom-input {
+    border-bottom: none;
 }
 
 .mdl-list__item-primary-content {
-    max-height: 24px;
     border-bottom: 2px solid lightgray;
+    padding: 0px !important
 }
 
-.list-bullet {
+.mdl-textfield.is-disabled .mdl-textfield__input {
+    border-bottom: none; //Important to override the mdl disabled input css
+    color: black; //Important to override the mdl disabled input css
+}
+
+.list-item__bullet {
     margin-right: 10px;
     color: lightgray;
 }
 
-.list-item {
-    margin-top: 20px
+.list-item__options {
+    color: lightgray;
+    border-bottom: 2px solid lightgray;
+    padding-top: 2px;
+}
+
+.icon-clickable:hover {
+    cursor: pointer;
+    color: black;
+}
+
+.checklist-input-centered {
+    text-align: center;
+    width: 100%;
+}
+
+.checklist-input__name, .checklist-input__name-label {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-size: 45px;
+    font-weight: 400;
+    line-height: 48px;
+    margin-top: 24px;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.checklist-input__name {
+    color: black;
+}
+
+.checklist-input__description, .checklist-input__description-label {
+    text-align: center;
 }
