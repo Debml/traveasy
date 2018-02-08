@@ -54,10 +54,8 @@ ActiveRecord::Schema.define(version: 20180120221544) do
   create_table "checklists", force: :cascade do |t|
     t.string "name", null: false
     t.string "description"
-    t.integer "checklist_type", null: false
     
     t.belongs_to :user, index: true
-    t.has_many :items, index: true
     
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -66,7 +64,6 @@ ActiveRecord::Schema.define(version: 20180120221544) do
   create_table "items", force: :cascade do |t|
     t.string "name", null: false
     t.string "description"
-    t.integer "quantity"
     
     t.belongs_to :checklist, index: true
   end

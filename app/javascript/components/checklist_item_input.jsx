@@ -12,13 +12,9 @@ export default class ItemInput extends React.Component {
         this.hideOptionsButton = this.hideOptionsButton.bind(this);
     }
     
-    componentDidMount() {
-        componentHandler.upgradeDom();
-    }
+    componentDidMount() {componentHandler.upgradeDom();}
     
-    saveItem() {
-        this.props.handleChange({name: document.getElementById("item_"+this.props.index).value}, this.props.index)
-    }
+    saveItem() {this.props.handleChange({name: document.getElementById("item_"+this.props.index).value}, this.props.index)}
     
     setButtonState(boolVal) {this.setState({showOptions: boolVal})}
     
@@ -41,8 +37,8 @@ export default class ItemInput extends React.Component {
 }
 
 ItemInput.propTypes = {
-    handleChange: PropTypes.func,
+    disabled: PropTypes.bool,
     index: PropTypes.number,
     val: PropTypes.string,
-    disabled: PropTypes.bool
+    handleChange: PropTypes.func
 }

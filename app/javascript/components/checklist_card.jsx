@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 export default class ChecklistCard extends React.Component {
     constructor(props) {
@@ -7,13 +8,16 @@ export default class ChecklistCard extends React.Component {
         this.state = {showOptions: false};
         
         this.openChecklist = this.openChecklist.bind(this);
+        this.deleteChecklist = this.deleteChecklist.bind(this)
         this.showOptionsButton = this.showOptionsButton.bind(this);
         this.hideOptionsButton = this.hideOptionsButton.bind(this);
     }
       
     componentDidMount() {componentHandler.upgradeDom();}
     
-    openChecklist() {this.props.onOpen(this.props.checklistId);}
+    openChecklist() {this.props.handleOpen(this.props.checklistId, this.props.index);}
+    
+    deleteChecklist() {this.props.handleDelete(this.props.checklistId, this.props.index)}
     
     setButtonState(boolVal) {this.setState({showOptions: boolVal});}
     
@@ -28,18 +32,20 @@ export default class ChecklistCard extends React.Component {
                 <div className="mdl-card__supporting-text">{this.props.description}</div>
                 
                 <div className="mdl-card__actions mdl-card--border">
-                    <p className="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" onClick={this.handleOpen}>VIEW CHECKLIST</p>
+                    <p className="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" onClick={this.openChecklist}>VIEW CHECKLIST</p>
                 </div>
                 
-                {this.state.showOptions && <div className="mdl-card__menu"><i className="material-icons icon-clickable">delete</i></div>}
+                {this.state.showOptions && <div className="mdl-card__menu"><i className="material-icons icon-clickable" onClick={this.deleteChecklist}>delete</i></div>}
             </div>
         );
     }
 }
 
 ChecklistCard.propTypes = {
-    onOpen: PropTypes.func,
+    index: PropTypes.number,
     checklistId: PropTypes.number,
     name: PropTypes.string,
-    description: PropTypes.string
+    description: PropTypes.string,
+    handleOpen: PropTypes.func,
+    handleDelete: PropTypes.func
 }

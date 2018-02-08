@@ -1,13 +1,12 @@
 class Checklist < ApplicationRecord
     belongs_to :user
-    has_many :items, autosave: true
+    has_many :items, autosave: true, dependent: :delete_all
     
-    def buildChecklistAndItems(checklist_data, current_user)
-        self[:name] = checklist_data[:name]
-        self[:description] = checklist_data[:description]
-        self[:checklist_type] = checklist_data[:checklist_type]
+    def buildChecklistAndItems(checklist, items, current_user)
+        self[:name] = checklist[:name]
+        self[:description] = checklist[:description]
         
         self.user = current_user
-        self.items.build(checklist_data[:items])
+        self.items.build(items)
     end
 end

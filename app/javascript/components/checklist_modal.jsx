@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import axios from 'axios'
 
 import ItemInput from '../components/checklist_item_input';
@@ -9,7 +10,7 @@ export default class ChecklistModal extends React.Component {
         
         {/*Set items with one empty item to always have at least one input*/}
         this.state = {
-            checklist: {name: "", description: ""},
+            checklist: {id: -1, name: "", description: ""},
             items: [{name: ""}]
         };
         
@@ -22,18 +23,18 @@ export default class ChecklistModal extends React.Component {
     }
     
     componentWillReceiveProps(nextProps) {
-        if (nextProps.show && nextProps.openedChecklist != -1) {
+        if (nextProps.show && nextProps.checklistId != -1) {
             let that = this;
-        
+            
             axios({
                 method: 'GET',
-                url: '/checklists/' + nextProps.openedChecklist
+                url: '/checklists/' + nextProps.checklistId
             })
-            .then(function(response){
-                const items = response.data.items
+            .then(function(response) {
                 const checklist = response.data.checklist[0]
+                const items = response.data.items
                 
-                that.setState({items, checklist});
+                that.setState({checklist, items});
             })
         }
     }
@@ -41,14 +42,12 @@ export default class ChecklistModal extends React.Component {
     resetModal() {
         {/*Set items with one empty item to always have at least one input*/}
         this.setState({
-            checklist: {name: "", description: ""},
+            checklist: {id: -1, name: "", description: ""},
             items: [{name: ""}]
-        }, this.props.onClose);
+        }, this.props.handleClose);
     }
     
-    addItem() {
-        this.setState({items: [...this.state.items, {name: ""}]});
-    }
+    addItem() {this.setState({items: [...this.state.items, {name: ""}]});}
     
     changeTitle() {
         var checklist = this.state.checklist;
@@ -72,42 +71,70 @@ export default class ChecklistModal extends React.Component {
     }
     
     saveChecklist() {
+        if (this.state.checklist.id == -1) {
+            this.createChecklist();
+        }
+        else {
+            this.updateChecklist();
+        }
+    }
+    
+    createChecklist() {
         const that = this
-        const checklist_name = document.getElementById("checklist_name").value
-        const checklist_description = document.getElementById("checklist_description").value
         
         axios({
-            method: 'POST',
-            url: '/checklists',
-            data: {checklist: {
-                name: checklist_name,
-                description: checklist_description,
-                checklist_type: 1,
+            method: "POST",
+            url: "/checklists",
+            data: {
+                checklist: this.state.checklist,
                 items: this.state.items
-            }},
+            },
             headers: {
-                'X-CSRF-Token': document.querySelector("meta[name=csrf-token]").content
+                "X-CSRF-Token": document.querySelector("meta[name=csrf-token]").content
             }
         })
         .then(function(response){
             const new_checklist = {
                 id: response.data.checklist_id,
-                name: checklist_name,
-                description: checklist_description
+                name: that.state.checklist.name,
+                description: that.state.checklist.description
             }
             
-            that.resetModal()
-            that.props.onSave(new_checklist)
+            //that.resetModal() --> This closes the modal after saving
+            that.props.handleSave("create", new_checklist, 0)
+        })
+    }
+    
+    updateChecklist() {
+        const that = this
+        
+        axios({
+            method: "PUT",
+            url: "/checklists/" + this.state.checklist.id,
+            data: {
+                checklist: this.state.checklist,
+                items: this.state.items
+            },
+            headers: {
+                "X-CSRF-Token": document.querySelector("meta[name=csrf-token]").content
+            }
+        })
+        .then(function(){
+            const updatedChecklist = {
+                id: that.state.checklist.id,
+                name: that.state.checklist.name,
+                description: that.state.checklist.description
+            }
+            
+            that.props.handleSave("update", updatedChecklist, that.props.cardIndex)
         })
     }
     
     render() {
-        if (!this.props.show) {
-            return null;
-        }
+        if (!this.props.show) {return null;}
         
         const items = this.state.items.map((itemData, index) => {
-            return <ItemInput key={index} index={index} val={this.state.items[index].name} disabled={!this.props.editable} handleChange={this.changeItem}/>
+            return <ItemInput key={index} index={index} disabled={!this.props.editable} val={this.state.items[index].name} handleChange={this.changeItem}/>
         });
         
         return (
@@ -119,7 +146,7 @@ export default class ChecklistModal extends React.Component {
                                 <input className="mdl-textfield__input checklist-input__name" type="text" id="checklist_name" value={this.state.checklist.name} 
                                     onChange={this.changeTitle} disabled={!this.props.editable}/>
                                 <label className="mdl-textfield__label checklist-input__name-label" htmlFor="checklist_name">
-                                    {this.props.openedChecklist == -1 ? "Title" : ""}
+                                    {this.state.checklist.id == -1 ? "Title" : ""}
                                 </label>
                             </div>
                             
@@ -127,7 +154,7 @@ export default class ChecklistModal extends React.Component {
                                 <input className="mdl-textfield__input checklist-input__description" type="text" id="checklist_description" value={this.state.checklist.description} 
                                     onChange={this.changeDescription} disabled={!this.props.editable}/>
                                 <label className="mdl-textfield__label checklist-input__description-label" htmlFor="checklist_description">
-                                    {this.props.openedChecklist == -1 ? "Enter a description for your checklist" : ""}
+                                    {this.state.checklist.id == -1 ? "Enter a description for your checklist" : ""}
                                 </label>
                             </div>
                             
@@ -161,9 +188,10 @@ export default class ChecklistModal extends React.Component {
 }
 
 ChecklistModal.propTypes = {
-    onSave: PropTypes.func,
-    onClose: PropTypes.func,
-    show: PropTypes.func,
-    openedChecklist: PropTypes.number,
-    editable: PropTypes.bool
+    show: PropTypes.bool,
+    editable: PropTypes.bool,
+    checklistId: PropTypes.number,
+    cardIndex: PropTypes.number,
+    handleSave: PropTypes.func,
+    handleClose: PropTypes.func
 }
