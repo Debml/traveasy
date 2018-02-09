@@ -28,12 +28,12 @@ export default class ItemInput extends React.Component {
     render() {
         return (
             <li className="mdl-list__item" onMouseEnter={this.showOptionsButton} onMouseLeave={this.hideOptionsButton}>
-                <i className="material-icons list-item__bullet">check_box_outline_blank</i>
+                <i className="material-icons list-item__bullet">{this.props.lastInput ? "add" : "check_box_outline_blank"}</i>
                 <div className="mdl-textfield mdl-js-textfield mdl-list__item-primary-content">
                     <input className="mdl-textfield__input custom-input" type="text" id={"item_"+this.props.index} value={this.props.val} disabled={this.props.disabled} onChange={this.saveItem}/>
                 </div>
                 
-                {this.state.showOptions && <i className="material-icons list-item__options icon-clickable" onClick={this.deleteItem}>delete</i>}
+                {!this.props.lastInput && this.state.showOptions && <i className="material-icons list-item__options icon-clickable" onClick={this.deleteItem}>delete</i>}
             </li>
         );
     }
@@ -41,6 +41,7 @@ export default class ItemInput extends React.Component {
 
 ItemInput.propTypes = {
     disabled: PropTypes.bool,
+    lastInput: PropTypes.bool,
     index: PropTypes.number,
     val: PropTypes.string,
     handleChange: PropTypes.func,

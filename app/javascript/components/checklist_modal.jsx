@@ -11,7 +11,7 @@ export default class ChecklistModal extends React.Component {
         {/*Set items with one empty item to always have at least one input*/}
         this.state = {
             checklist: {id: -1, name: "", description: ""},
-            items: [{name: ""}],
+            items: [],
             dirtyItems: {"create": {}, "update": {}, "delete": {}}
         };
         
@@ -41,19 +41,26 @@ export default class ChecklistModal extends React.Component {
         }
     }
     
+    componentDidUpdate(prevProps, prevState) {
+        //if there was a new item input added to the modal...
+        if (prevState.items.length < this.state.items.length) {
+            //move keyboard input to new input
+            const newInput = document.getElementById("item_" + prevState.items.length);
+            const val = newInput.value;
+            
+            newInput.focus();
+            newInput.value = '';
+            newInput.value = val;
+        }
+    }
+    
     resetModal() {
         {/*Set items with one empty item to always have at least one input*/}
         this.setState({
             checklist: {id: -1, name: "", description: ""},
-            items: [{name: ""}],
+            items: [],
             dirtyItems: {"create": {}, "update": {}, "delete": {}}
         }, this.props.handleClose);
-    }
-    
-    addItem() {
-        this.setState({
-            items: [...this.state.items, {name: ""}]
-        });
     }
     
     changeTitle() {
@@ -70,17 +77,27 @@ export default class ChecklistModal extends React.Component {
         this.setState({checklist});
     }
     
+    addItem(newItemInfo, itemIndex) {
+        var dirtyItems = this.state.dirtyItems;
+        var items = this.state.items;
+        
+        dirtyItems["create"][itemIndex] = newItemInfo;
+        this.setState({
+            items: [...this.state.items, newItemInfo]
+        });
+    }
+    
     changeItem(newItemInfo, itemIndex) {
         var dirtyItems = this.state.dirtyItems;
         var items = this.state.items;
         
         //if the item has 'id' property, it exists in the DB
         if ("id" in items[itemIndex]) {
-            dirtyItems["update"][items[itemIndex].id] = newItemInfo
+            dirtyItems["update"][items[itemIndex].id] = newItemInfo;
         }
         //use input index as key
         else {
-            dirtyItems["create"][itemIndex] = newItemInfo
+            dirtyItems["create"][itemIndex] = newItemInfo;
         }
         
         //since newItemInfo only contains updated fields, do not assign directly to avoid locally overwriting the item
@@ -93,14 +110,16 @@ export default class ChecklistModal extends React.Component {
         var dirtyItems = this.state.dirtyItems
         var items = this.state.items
         
-        //if the item has no 'id' property, it is not saved and should be ignored from server requests
+        //if the item has no 'id' property, it is not saved in the DB and should be ignored from server requests
         if ("id" in items[itemIndex]) {
             dirtyItems["delete"][items[itemIndex].id] = items[itemIndex].id
         }
         
         //remove it from "create" in case it was created before deletion
         if (itemIndex in dirtyItems["create"]) {
-            delete dirtyItems["create"][itemIndex]
+            delete dirtyItems["create"][itemIndex];
+            
+            dirtyItems["create"] = this.shiftKeys(dirtyItems["create"], itemIndex);
         }
         
         //remove it from "update" in case it was updated before deletion
@@ -111,6 +130,22 @@ export default class ChecklistModal extends React.Component {
         items.splice(itemIndex, 1);
         
         this.setState({items, dirtyItems});
+    }
+    
+    shiftKeys(hash, itemIndex) {
+        var new_hash = {};
+        
+        Object.keys(hash).map((key) => {
+            var new_key = key;
+            
+            if (key > itemIndex) {
+                new_key = new_key - 1;
+            }
+            
+            new_hash[new_key] = hash[key];
+        });
+        
+        return new_hash;
     }
     
     saveChecklist() {
@@ -154,7 +189,7 @@ export default class ChecklistModal extends React.Component {
         if (!this.props.show) {return null;}
         
         const items = this.state.items.map((itemData, index) => {
-            return <ItemInput key={index} index={index} disabled={!this.props.editable} val={this.state.items[index].name} handleChange={this.changeItem} handleDelete={this.deleteItem}/>
+            return <ItemInput key={index} index={index} disabled={!this.props.editable} lastInput={false} val={this.state.items[index].name} handleChange={this.changeItem} handleDelete={this.deleteItem}/>
         });
         
         return (
@@ -180,6 +215,7 @@ export default class ChecklistModal extends React.Component {
                             
                             <ul className="mdl-list">
                                 {items}
+                                <ItemInput key={items.length} index={items.length} disabled={!this.props.editable} lastInput={true} val={""} handleChange={this.addItem}/>
                             </ul>
                             
                         </form>
@@ -191,14 +227,9 @@ export default class ChecklistModal extends React.Component {
                             <div className="mdl-tooltip" data-mdl-for="save_checklist">Save checklist</div>
                         </button>
 
-                        <button className="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" id="add_item" onClick={this.addItem}>
-                            <i className="material-icons">add</i>
-                            <div className="mdl-tooltip" data-mdl-for="add_item">Add item</div>
-                        </button>
-
                         <button className="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" id="discard_checklist" onClick={this.resetModal}>
                             <i className="material-icons">clear</i>
-                            <div className="mdl-tooltip" data-mdl-for="discard_checklist">Discard checklist</div>
+                            <div className="mdl-tooltip" data-mdl-for="discard_checklist">{this.state.checklist.id != -1? "Close checklist" : "Discard checklist"}</div>
                         </button>
                     </div>
                 </div>
