@@ -14,24 +14,29 @@ class ChecklistsController < ApplicationController
     params.permit!
     
     checklist = Checklist.new
-    checklist.buildChecklistAndItems(params[:checklist], params[:items], current_user)
+    checklist.build_checklist_and_items(params[:checklist], params[:items], current_user)
     checklist.save
     
-    return render :json => {"checklist_id" => checklist.id}
+    return render :json => {"checklist" => checklist, "items" => checklist.items}
   end
   
   def show
-    checklist = Checklist.where(user_id: current_user.id, id: params[:id])
-    items = Item.where(checklist_id: params[:id])
+    checklist = Checklist.where(user_id: current_user.id, id: params[:id]).first
     
-    return render :json => {"checklist" => checklist, "items" => items}
+    return render :json => {"checklist" => checklist, "items" => checklist.items}
   end
   
   def update
-    checklistData = params[:checklist]
-    itemData = params[:items]
+    params.permit!
     
-    Checklist.update(checklistData[:id], :name => checklistData[:name], :description => checklistData[:description])
+    checklist_data = params[:checklist]
+    item_data = params[:items]
+    
+    checklist = Checklist.where(user_id: current_user.id, id: checklist_data[:id]).first
+    checklist.set_item_data(item_data)
+    checklist.update(:name => checklist_data[:name], :description => checklist_data[:description])
+    
+    return render :json => {"checklist" => checklist, "items" => checklist.items}
   end
   
   def destroy

@@ -47,10 +47,6 @@ export default class ChecklistIndex extends React.Component {
     }
     
     newChecklist() {
-        this.setState({
-            openedChecklistId: -1,
-            openedChecklistCardIndex: -1
-        });
         this.setModalOpen(true, true);
     }
     
@@ -64,7 +60,14 @@ export default class ChecklistIndex extends React.Component {
     
     disableChecklist() {this.setModalOpen(true, false);}
     
-    closeChecklist() {this.setModalOpen(false, false);}
+    closeChecklist() {
+        this.setState({
+            openedChecklistId: -1,
+            openedChecklistCardIndex: -1
+        });
+        
+        this.setModalOpen(false, false);
+    }
     
     deleteChecklist(checklistId, checklistIndex) {
         let that = this;
@@ -81,7 +84,11 @@ export default class ChecklistIndex extends React.Component {
     
     updateChecklistCardView(action, checklist, checklistIndex) {
         if (action == "create") {
-            this.setState({checklists: [checklist, ...this.state.checklists]});
+            this.setState({
+                openedChecklistId: checklist.id,
+                openedChecklistCardIndex: 0,
+                checklists: [checklist, ...this.state.checklists]
+            });
         }
         else if (action == "update") {
             var checklists = this.state.checklists;

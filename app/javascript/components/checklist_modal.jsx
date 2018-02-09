@@ -11,7 +11,8 @@ export default class ChecklistModal extends React.Component {
         {/*Set items with one empty item to always have at least one input*/}
         this.state = {
             checklist: {id: -1, name: "", description: ""},
-            items: [{name: ""}]
+            items: [{name: ""}],
+            dirtyItems: {"create": {}, "update": {}, "delete": {}}
         };
         
         this.resetModal = this.resetModal.bind(this);
@@ -20,6 +21,7 @@ export default class ChecklistModal extends React.Component {
         this.changeDescription = this.changeDescription.bind(this);
         this.changeItem = this.changeItem.bind(this);
         this.saveChecklist = this.saveChecklist.bind(this);
+        this.deleteItem = this.deleteItem.bind(this)
     }
     
     componentWillReceiveProps(nextProps) {
@@ -31,7 +33,7 @@ export default class ChecklistModal extends React.Component {
                 url: '/checklists/' + nextProps.checklistId
             })
             .then(function(response) {
-                const checklist = response.data.checklist[0]
+                const checklist = response.data.checklist
                 const items = response.data.items
                 
                 that.setState({checklist, items});
@@ -43,11 +45,16 @@ export default class ChecklistModal extends React.Component {
         {/*Set items with one empty item to always have at least one input*/}
         this.setState({
             checklist: {id: -1, name: "", description: ""},
-            items: [{name: ""}]
+            items: [{name: ""}],
+            dirtyItems: {"create": {}, "update": {}, "delete": {}}
         }, this.props.handleClose);
     }
     
-    addItem() {this.setState({items: [...this.state.items, {name: ""}]});}
+    addItem() {
+        this.setState({
+            items: [...this.state.items, {name: ""}]
+        });
+    }
     
     changeTitle() {
         var checklist = this.state.checklist;
@@ -63,70 +70,83 @@ export default class ChecklistModal extends React.Component {
         this.setState({checklist});
     }
     
-    changeItem(newItemInfo, index) {
+    changeItem(newItemInfo, itemIndex) {
+        var dirtyItems = this.state.dirtyItems;
         var items = this.state.items;
-        items[index] = newItemInfo
         
-        this.setState({items});
+        //if the item has 'id' property, it exists in the DB
+        if ("id" in items[itemIndex]) {
+            dirtyItems["update"][items[itemIndex].id] = newItemInfo
+        }
+        //use input index as key
+        else {
+            dirtyItems["create"][itemIndex] = newItemInfo
+        }
+        
+        //since newItemInfo only contains updated fields, do not assign directly to avoid locally overwriting the item
+        items[itemIndex].name = newItemInfo.name;
+        
+        this.setState({items, dirtyItems});
+    }
+    
+    deleteItem(itemIndex) {
+        var dirtyItems = this.state.dirtyItems
+        var items = this.state.items
+        
+        //if the item has no 'id' property, it is not saved and should be ignored from server requests
+        if ("id" in items[itemIndex]) {
+            dirtyItems["delete"][items[itemIndex].id] = items[itemIndex].id
+        }
+        
+        //remove it from "create" in case it was created before deletion
+        if (itemIndex in dirtyItems["create"]) {
+            delete dirtyItems["create"][itemIndex]
+        }
+        
+        //remove it from "update" in case it was updated before deletion
+        if (items[itemIndex].id in dirtyItems["update"]) {
+            delete dirtyItems["update"][items[itemIndex].id]
+        }
+        
+        items.splice(itemIndex, 1);
+        
+        this.setState({items, dirtyItems});
     }
     
     saveChecklist() {
         if (this.state.checklist.id == -1) {
-            this.createChecklist();
+            var action = "POST";
+            var url = "/checklists";
+            var card_update_action = "create";
+            var card_index = 0;
         }
         else {
-            this.updateChecklist();
+            action = "PATCH"
+            var url = "/checklists/" + this.state.checklist.id;
+            var card_update_action = "update";
+            var card_index = this.props.cardIndex;
         }
-    }
-    
-    createChecklist() {
+        
         const that = this
         
         axios({
-            method: "POST",
-            url: "/checklists",
+            method: action,
+            url: url,
             data: {
                 checklist: this.state.checklist,
-                items: this.state.items
+                items: this.state.dirtyItems
             },
             headers: {
                 "X-CSRF-Token": document.querySelector("meta[name=csrf-token]").content
             }
         })
         .then(function(response){
-            const new_checklist = {
-                id: response.data.checklist_id,
-                name: that.state.checklist.name,
-                description: that.state.checklist.description
-            }
-            
-            //that.resetModal() --> This closes the modal after saving
-            that.props.handleSave("create", new_checklist, 0)
-        })
-    }
-    
-    updateChecklist() {
-        const that = this
-        
-        axios({
-            method: "PUT",
-            url: "/checklists/" + this.state.checklist.id,
-            data: {
-                checklist: this.state.checklist,
-                items: this.state.items
-            },
-            headers: {
-                "X-CSRF-Token": document.querySelector("meta[name=csrf-token]").content
-            }
-        })
-        .then(function(){
-            const updatedChecklist = {
-                id: that.state.checklist.id,
-                name: that.state.checklist.name,
-                description: that.state.checklist.description
-            }
-            
-            that.props.handleSave("update", updatedChecklist, that.props.cardIndex)
+            //that.resetModal() --> Closes the modal after saving
+            that.setState({
+                checklist: response.data.checklist,
+                items: response.data.items,
+                dirtyItems: {"create": {}, "update": {}, "delete": {}}
+            }, that.props.handleSave(card_update_action, response.data.checklist, card_index));
         })
     }
     
@@ -134,7 +154,7 @@ export default class ChecklistModal extends React.Component {
         if (!this.props.show) {return null;}
         
         const items = this.state.items.map((itemData, index) => {
-            return <ItemInput key={index} index={index} disabled={!this.props.editable} val={this.state.items[index].name} handleChange={this.changeItem}/>
+            return <ItemInput key={index} index={index} disabled={!this.props.editable} val={this.state.items[index].name} handleChange={this.changeItem} handleDelete={this.deleteItem}/>
         });
         
         return (
@@ -166,8 +186,8 @@ export default class ChecklistModal extends React.Component {
                     </div>
                     
                     <div className="mdl-dialog__actions">
-                        <button className="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" id="save_checklist" onClick={this.saveChecklist}>
-                            <i className="material-icons">done</i>
+                        <button className="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" id="save_checklist" onClick={this.saveChecklist} disabled={Object.keys(this.state.dirtyItems).length < 1}>
+                            <i className="material-icons">save</i>
                             <div className="mdl-tooltip" data-mdl-for="save_checklist">Save checklist</div>
                         </button>
 
