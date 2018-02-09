@@ -12,7 +12,8 @@ export default class ChecklistModal extends React.Component {
         this.state = {
             checklist: {id: -1, name: "", description: ""},
             items: [],
-            dirtyItems: {"create": {}, "update": {}, "delete": {}}
+            dirtyItems: {"create": {}, "update": {}, "delete": {},},
+            isDirty: false
         };
         
         this.resetModal = this.resetModal.bind(this);
@@ -59,7 +60,8 @@ export default class ChecklistModal extends React.Component {
         this.setState({
             checklist: {id: -1, name: "", description: ""},
             items: [],
-            dirtyItems: {"create": {}, "update": {}, "delete": {}}
+            dirtyItems: {"create": {}, "update": {}, "delete": {}},
+            isDirty: false
         }, this.props.handleClose);
     }
     
@@ -67,23 +69,30 @@ export default class ChecklistModal extends React.Component {
         var checklist = this.state.checklist;
         checklist.name = document.getElementById("checklist_name").value;
         
-        this.setState({checklist});
+        const isDirty = true
+        
+        this.setState({checklist, isDirty});
     }
     
     changeDescription() {
         var checklist = this.state.checklist;
         checklist.description = document.getElementById("checklist_description").value;
         
-        this.setState({checklist});
+        const isDirty = true
+        
+        this.setState({checklist, isDirty});
     }
     
     addItem(newItemInfo, itemIndex) {
         var dirtyItems = this.state.dirtyItems;
         var items = this.state.items;
         
+        const isDirty = true
+        
         dirtyItems["create"][itemIndex] = newItemInfo;
         this.setState({
-            items: [...this.state.items, newItemInfo]
+            items: [...this.state.items, newItemInfo],
+            isDirty
         });
     }
     
@@ -103,7 +112,9 @@ export default class ChecklistModal extends React.Component {
         //since newItemInfo only contains updated fields, do not assign directly to avoid locally overwriting the item
         items[itemIndex].name = newItemInfo.name;
         
-        this.setState({items, dirtyItems});
+        const isDirty = true
+
+        this.setState({items, dirtyItems, isDirty});
     }
     
     deleteItem(itemIndex) {
@@ -129,7 +140,9 @@ export default class ChecklistModal extends React.Component {
         
         items.splice(itemIndex, 1);
         
-        this.setState({items, dirtyItems});
+        const isDirty = true
+
+        this.setState({items, dirtyItems, isDirty});
     }
     
     shiftKeys(hash, itemIndex) {
@@ -180,8 +193,12 @@ export default class ChecklistModal extends React.Component {
             that.setState({
                 checklist: response.data.checklist,
                 items: response.data.items,
-                dirtyItems: {"create": {}, "update": {}, "delete": {}}
+                dirtyItems: {"create": {}, "update": {}, "delete": {}},
+                isDirty: false
             }, that.props.handleSave(card_update_action, response.data.checklist, card_index));
+            
+            //save button tooltip stays on after disabling, remove it
+            document.getElementById("save_checklist_tooltip").classList.remove("is-active");
         })
     }
     
@@ -222,9 +239,9 @@ export default class ChecklistModal extends React.Component {
                     </div>
                     
                     <div className="mdl-dialog__actions">
-                        <button className="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" id="save_checklist" onClick={this.saveChecklist} disabled={Object.keys(this.state.dirtyItems).length < 1}>
+                        <button className="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" id="save_checklist" onClick={this.saveChecklist} disabled={!this.state.isDirty}>
                             <i className="material-icons">save</i>
-                            <div className="mdl-tooltip" data-mdl-for="save_checklist">Save checklist</div>
+                            <div className="mdl-tooltip" data-mdl-for="save_checklist" id="save_checklist_tooltip">Save checklist</div>
                         </button>
 
                         <button className="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" id="discard_checklist" onClick={this.resetModal}>
