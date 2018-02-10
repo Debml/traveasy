@@ -1,8 +1,9 @@
 $login_icon_size: 30px;
 $login_icon_padding: 4px;
 $custom_blue: rgb(63,81,181);
+$small_icon_size: 20px;
 
-.sign_in-form:before {
+.user-form:before {
     content: "";
     position: fixed;
     left: 0;
@@ -25,7 +26,7 @@ $custom_blue: rgb(63,81,181);
     filter: blur(4px);
 }
 
-.sign_in-form {
+.user-form {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -42,16 +43,18 @@ $custom_blue: rgb(63,81,181);
     box-shadow: 0 0 10px rgba(0,0,0,1);
 }
 
-.sign_in-form__title {
+.user-form__title {
     text-align: center;
     color: white;
+    margin-top: 0px;
+    margin-bottom: 20px;
 }
 
-.sign_in-form__input-container {
+.user-form__input-container {
     margin-bottom: 30px;
 }
 
-.sign_in-form__input {
+.user-form__input {
     width: 300px - ($login_icon_size + $login_icon_padding - 2px);
     border: none;
     border-radius: 0px 4px 4px 0px;
@@ -63,7 +66,13 @@ $custom_blue: rgb(63,81,181);
     outline: none;
 }
 
-.sign_in-form__input-icon {
+.user-form__showable_password {
+    display: inline-block;
+    width: 300px - ($login_icon_size + $login_icon_padding - 2px) - ($small_icon_size + 7px + 4px);
+    border-radius: 0px;
+}
+
+.user-form__input-icon {
     position: absolute;
     font-size: $login_icon_size;
     background-color: white;
@@ -72,30 +81,38 @@ $custom_blue: rgb(63,81,181);
     padding: $login_icon_padding;
 }
 
-.sign_in-form__input-icon:hover {
+.user-form__input-icon__show-password {
+    position: absolute;
+    background-color: white;
+    color: gray;
+    border-radius: 0px 4px 4px 0px;
+    padding: 7px 7px 7px 0px;
+}
+
+.user-form__input-icon:hover, .user-form__input-icon__show-password {
     cursor: default;
 }
 
-.sign_in-form__input-icon {
+.user-form__input-icon {
     border-right-color: gray;
     border-right-width: 2px;
     border-right-style: solid;
 }
 
-.sign_in-form__button {
+.user-form__button {
     border-radius: 4px;
     width: 320px;
 }
 
-.sign_in-form__sign_up-container {
+.user-form__toggle-container {
     overflow: hidden;
     text-align: center;
     color: white;
     margin-top: 20px;
   }
   
-.sign_in-form__sign_up-container:before,
-.sign_in-form__sign_up-container:after {
+.user-form__toggle-container:before,
+.user-form__toggle-container:after {
     background-color: white;
     content: "";
     display: inline-block;
@@ -105,20 +122,20 @@ $custom_blue: rgb(63,81,181);
     width: 50%;
 }
 
-.sign_in-form__sign_up-container:before {
+.user-form__toggle-container:before {
     right: 0.5em;
     margin-left: -50%;
 }
 
-.sign_in-form__sign_up-container:after {
+.user-form__toggle-container:after {
     left: 0.5em;
     margin-right: -50%;
 }
   
-.sign_in-form__sign_up-button {
+.user-form__toggle-button {
     color: $custom_blue;
 }
 
-.sign_in-form__sign_up-button:hover {
+.user-form__toggle-button:hover {
     cursor: pointer;
 }
