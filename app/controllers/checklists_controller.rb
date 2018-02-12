@@ -1,13 +1,9 @@
 class ChecklistsController < ApplicationController
   before_action :authenticate_user!
   
-  def get_checklists
+  def index
     checklists = Checklist.where(user_id: current_user.id).order(updated_at: :desc)
     return render :json => {"checklists" => checklists}
-  end
-  
-  def index
-    render "view"
   end
   
   def create

@@ -1,46 +1,18 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import axios from 'axios'
 
 import SiteLinks from './nav_site_links'
-import UserControl from './nav_user_control'
 
 export default class MainNav extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         
-        this.state = {
-            user: null,
-            loggedIn: false
-        }
+        this.logOut = this.logOut.bind(this);
     }
     
-    componentDidMount() {
-        let that = this
-        axios({
-            method: 'GET',
-            url: '/users/get_current_user',
-            headers: {
-                'X-CSRF-Token': document.querySelector("meta[name=csrf-token]").content
-            }
-        })
-        .then(function(response){
-            if (response.data.user) {
-                that.setState({
-                    user: response.data.user,
-                    loggedIn: true
-                })
-            }
-            else {
-                that.setState({
-                    user: null,
-                    loggedIn: false
-                })
-            }
-        })
-    }
-    
-    signOut() {
-        let that = this
+    logOut() {
+        let that = this;
         
         axios({
             method: 'GET',
@@ -49,13 +21,8 @@ export default class MainNav extends React.Component {
                 'X-CSRF-Token': document.querySelector("meta[name=csrf-token]").content
             }
         })
-        .then(function(response){
-            console.log("mainlogout")
-            that.setState({
-                user: null,
-                loggedIn: false
-            })
-            console.log("postlogout")
+        .then(function(){
+            that.props.handleLogout(null);
         })
     }
     
@@ -63,19 +30,24 @@ export default class MainNav extends React.Component {
         return (
             <header className="mdl-layout__header">
                 <div className="mdl-layout__header-row">
-                    <span className="mdl-layout-title home">Traveasy</span>
+                    <span className="mdl-layout-title">Traveasy</span>
                     
                     <div className="mdl-layout-spacer"></div>
                     
-                    {/*Hide links in small screens and show the drawer menu instead*/}
-                    <nav className="mdl-layout--large-screen-only">
-                        <SiteLinks loggedIn = {this.state.loggedIn}/>
+                    <nav className="mdl-navigation mdl-layout--large-screen-only">
+                        <a className="mdl-navigation__link">Checklists</a>
+                        <a className="mdl-navigation__link">Trips</a>
                     </nav>
                     
-                    <UserControl loggedIn = {this.state.loggedIn} user = {this.state.user} logout = {this.signOut}/>
-                    
+                    <nav className="mdl-navigation">
+                        <p className="mdl-navigation__link">{this.props.user.email}</p>
+                        <div id="log_out-icon" className="material-icons icon-clickable" onClick={this.logOut}>exit_to_app</div>
+                        <div className="mdl-tooltip mdl-tooltip--large" htmlFor="log_out-icon">Logout</div>
+                    </nav>
                 </div>
             </header>
         );
     }
 }
+
+MainNav.propTypes = {}

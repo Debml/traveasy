@@ -11,27 +11,11 @@ export default class UserForm extends React.Component {
             show_password: false
         };
         
-        this.getTitle = this.getTitle.bind(this)
-        this.getQuestion = this.getQuestion.bind(this)
         this.toggleForm = this.toggleForm.bind(this)
         this.toggleShowPassword = this.toggleShowPassword.bind(this)
         this.signUp = this.signUp.bind(this)
         this.signIn = this.signIn.bind(this)
         this.handleSubmitButton = this.handleSubmitButton.bind(this)
-    }
-    
-    getTitle() {
-        if (this.state.sign_up)
-            return "Sign up"
-        else
-            return "Sign in"
-    }
-    
-    getQuestion() {
-        if (this.state.sign_up)
-            return "Already registered?"
-        else
-            return "Not Registered?"
     }
     
     toggleForm() {
@@ -43,6 +27,8 @@ export default class UserForm extends React.Component {
     }
     
     signIn() {
+        let that = this
+        
         axios({
             method: 'POST',
             url: '/users/sign_in',
@@ -55,11 +41,16 @@ export default class UserForm extends React.Component {
             }
         })
         .then(function(response){
-            console.log("signed in")
+            that.props.handleUser({
+                email: document.getElementById("email").value,
+                password: document.getElementById("password").value,
+            })
         })
     }
     
     signUp() {
+        let that = this
+
         axios({
             method: 'POST',
             url: '/users',
@@ -73,7 +64,10 @@ export default class UserForm extends React.Component {
             }
         })
         .then(function(response){
-            console.log("signed up")
+            that.props.handleUser({
+                email: document.getElementById("email").value,
+                password: document.getElementById("password").value,
+            })
         })
     }
     
@@ -87,7 +81,7 @@ export default class UserForm extends React.Component {
     render() {
         return (
             <form className="user-form">
-                <h3 className="user-form__title">{this.getTitle()}</h3>
+                <h3 className="user-form__title">{this.state.sign_up? "Sign up":"Sign in"}</h3>
                 
                 {this.state.sign_up && <div className="user-form__input-container">
                     <i className="material-icons user-form__input-icon">person</i>
@@ -106,10 +100,13 @@ export default class UserForm extends React.Component {
                 </div>
 
                 <button type="button" className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored user-form__button" onClick={this.handleSubmitButton}>
-                    {this.getTitle()}
+                    {this.state.sign_up? "Sign up":"Sign in"}
                 </button>
                 
-                <div className="user-form__toggle-container">{this.getQuestion()} <span className="user-form__toggle-button" onClick={this.toggleForm}>{this.getTitle()}</span></div>
+                <div className="user-form__toggle-container">
+                    {this.state.sign_up? "Already registered? ":"Not Registered? "} 
+                    <span className="user-form__toggle-button" onClick={this.toggleForm}>{!this.state.sign_up? "Sign up":"Sign in"}</span>
+                </div>
             </form>
         );
     }
