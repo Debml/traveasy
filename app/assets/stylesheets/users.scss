@@ -1,6 +1,8 @@
 $login_icon_size: 30px;
 $login_icon_padding: 4px;
 $custom_blue: rgb(63,81,181);
+$custom_red: #ff5252;
+$custom_green: #00897b;
 $small_icon_size: 20px;
 
 .user-form:before {
@@ -50,27 +52,9 @@ $small_icon_size: 20px;
     margin-bottom: 20px;
 }
 
-.user-form__input-container {
+/**.user-form__input-container {
     margin-bottom: 30px;
-}
-
-.user-form__input {
-    width: 300px - ($login_icon_size + $login_icon_padding - 2px);
-    border: none;
-    border-radius: 0px 4px 4px 0px;
-    background-color: white;
-    color: black;
-    margin-left: $login_icon_size + $login_icon_padding + 2px;
-    padding: 13px 6px 7px 10px;
-    //padding: 13px 6px 7px 6px;
-    outline: none;
-}
-
-.user-form__showable_password {
-    display: inline-block;
-    width: 300px - ($login_icon_size + $login_icon_padding - 2px) - ($small_icon_size + 7px + 4px);
-    border-radius: 0px;
-}
+}**/
 
 .user-form__input-icon {
     position: absolute;
@@ -79,24 +63,70 @@ $small_icon_size: 20px;
     color: gray;
     border-radius: 4px 0px 0px 4px;
     padding: $login_icon_padding;
+    border-top: transparent 2px solid;
+    border-left: transparent 2px solid;
+    border-bottom: transparent 2px solid;
 }
 
-.user-form__input-icon__show-password {
+.user-form__input {
+    width: 268px;
+    border: none;
+    border-radius: 0px 4px 4px 0px;
+    background-color: white;
+    color: black;
+    margin-left: $login_icon_size + 2*$login_icon_padding;
+    padding: 13px 6px 7px 6px;
+    outline: none;
+    border-top: transparent 2px solid;
+    border-right: transparent 2px solid;
+    border-bottom: transparent 2px solid;
+    margin-bottom: 30px;
+}
+
+.user-form__showable_password {
+    display: inline-block;
+    width: 300px - ($login_icon_size + $login_icon_padding - 2px) - ($small_icon_size + 7px + 4px);
+    border-radius: 0px;
+    border-right: none;
+}
+
+.user-form__input-icon_right {
     position: absolute;
     background-color: white;
     color: gray;
     border-radius: 0px 4px 4px 0px;
     padding: 7px 7px 7px 0px;
+    border-top: transparent 2px solid;
+    border-right: transparent 2px solid;
+    border-bottom: transparent 2px solid;
 }
 
-.user-form__input-icon:hover, .user-form__input-icon__show-password {
+.user-form__input-icon:hover, .user-form__input-icon_right {
     cursor: default;
 }
 
-.user-form__input-icon {
-    border-right-color: gray;
-    border-right-width: 2px;
-    border-right-style: solid;
+.user-form__input_success {
+    border-color: $custom_green;
+}
+
+.user-form__input-icon_success {
+    border-color: $custom_green;
+    color: $custom_green;
+}
+
+.user-form__input_error {
+    border-color: $custom_red;
+    margin-bottom: 0px;
+}
+
+.user-form__input-error_message {
+    color: $custom_red;
+    margin-bottom: 10px;
+}
+
+.user-form__input-icon_error {
+    border-color: $custom_red;
+    color: $custom_red;
 }
 
 .user-form__button {

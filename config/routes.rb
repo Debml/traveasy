@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   get '/dashboard', to: 'home#index'
   
   #Users API
-  devise_for :users, skip: [:sessions, :registrations]
+  devise_for :users, skip: [:sessions, :registrations, :passwords]
   devise_scope :user do
     #Devise/Sessions
     post '/users/sign_in', to: 'users/sessions#create', as: :new_user_session
@@ -12,7 +12,7 @@ Rails.application.routes.draw do
     get '/users/sign_out', to: 'users/sessions#destroy', as: :destroy_user_session
     
     #Devise/Registrations
-    post 'users', to: 'devise/registrations#create'
+    post 'users/sign_up', to: 'users/registrations#create'
   end
   
   #Checklists API
@@ -21,6 +21,8 @@ Rails.application.routes.draw do
   get 'checklists/:id', to: 'checklists#show'
   patch 'checklists/:id', to: 'checklists#update'
   delete 'checklists/:id', to: 'checklists#destroy'
+  
+  get '*path', to: 'home#index'
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

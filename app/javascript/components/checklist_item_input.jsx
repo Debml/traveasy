@@ -13,7 +13,7 @@ export default class ItemInput extends React.Component {
         this.hideOptionsButton = this.hideOptionsButton.bind(this);
     }
     
-    componentDidMount() {componentHandler.upgradeDom();}
+    componentDidMount() {/*componentHandler.upgradeDom();*/}
     
     saveItem() {this.props.handleChange({name: document.getElementById("item_"+this.props.index).value}, this.props.index)}
     

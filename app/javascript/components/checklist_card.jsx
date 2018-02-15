@@ -13,7 +13,7 @@ export default class ChecklistCard extends React.Component {
         this.hideOptionsButton = this.hideOptionsButton.bind(this);
     }
       
-    componentDidMount() {componentHandler.upgradeDom();}
+    componentDidMount() {/*componentHandler.upgradeDom(); -> For some reason, upgrading the DOM causes conflicts with react's remove child*/}
     
     openChecklist() {this.props.handleOpen(this.props.checklistId, this.props.index);}
     

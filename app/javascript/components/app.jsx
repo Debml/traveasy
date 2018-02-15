@@ -61,6 +61,7 @@ export default class App extends React.Component {
             <Switch>
                 <Route exact path="/" render={() => (this.state.loggedIn ? <Redirect to="/dashboard"/> : <UserForm handleUser={this.setUser}/>)}/>
                 <Route exact path="/dashboard" render={() => (this.state.loggedIn ? <Dashboard user={this.state.user} handleLogout={this.setUser}/> : <Redirect to="/"/>)}/>
+                <Route render={() => <Redirect to="/"/>} />
             </Switch>
         );
     }
