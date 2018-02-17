@@ -15,6 +15,7 @@ ActiveRecord::Schema.define(version: 20180120221544) do
   create_table "users", force: :cascade do |t|
     ## Database authenticatable
     t.string "email", default: "", null: false
+    t.string "name", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     
     ## Recoverable

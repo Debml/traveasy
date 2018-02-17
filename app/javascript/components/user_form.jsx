@@ -151,7 +151,22 @@ export default class UserForm extends React.Component {
             }
         })
         .then(function(response) {
-            that.props.handleUser(response.data.user)
+            if (response.data.success) {
+                that.props.handleUser(response.data.user)
+            }
+        })
+        .catch(function(error) {
+            const error_data = error.response.data
+            
+            if (error_data.culprit == "email") {
+                const email = {validated: true, error: true, error_message: error_data.message}
+                that.setState({email});
+            }
+            
+            if (error_data.culprit == "password") {
+                const password = {validated: true, error: true, error_message: error_data.message}
+                that.setState({password});
+            }
         })
     }
     
@@ -163,20 +178,41 @@ export default class UserForm extends React.Component {
             url: '/users/sign_up',
             data: {user: {
                 email: document.getElementById("email").value,
+                name: document.getElementById("name").value,
                 password: document.getElementById("password").value,
-                password_confirmation: document.getElementById("password").value
+                password_confirmation: document.getElementById("password").value //there is no 'confirm password' field (we let the user take a look at it)
             }},
             headers: {
                 'X-CSRF-Token': document.querySelector("meta[name=csrf-token]").content
             }
         })
         .then(function(response){
-            that.props.handleUser(response.data.user)
+            if (response.data.success) {
+                that.props.handleUser(response.data.user)
+            }
+        })
+        .catch(function(error) {
+            const error_data = error.response.data
+            
+            if (error_data.culprit == "name") {
+                const name = {validated: true, error: true, error_message: error_data.message}
+                that.setState({name});
+            }
+            
+            if (error_data.culprit == "email") {
+                const email = {validated: true, error: true, error_message: error_data.message}
+                that.setState({email});
+            }
+            
+            if (error_data.culprit == "password") {
+                const password = {validated: true, error: true, error_message: error_data.message}
+                that.setState({password});
+            }
         })
     }
     
     handleSubmitButton() {
-        const validName = this.state.sign_up ? this.validateName : true; //name shouldn't be validated in the sign in form
+        const validName = this.state.sign_up ? this.validateName() : true; //name shouldn't be validated in the sign in form
         const validEmail = this.validateEmail()
         const validPassword = this.validatePassword()
         
