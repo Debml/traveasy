@@ -127,9 +127,13 @@ export default class ChecklistIndex extends React.Component {
             <main className="mdl-layout__content">
                 <div className="page-content">
                 
-                    <div className="mdl-grid">
-                        {cards}
-                    </div>
+                    {this.state.checklists.length > 0 &&
+                        <div className="mdl-grid">
+                            {cards}
+                        </div>
+                    }
+                    
+                    {this.state.checklists.length < 1 && <h1 className="empty_section">You don't seem to have any checklists</h1>}
                     
                     <ChecklistModal show={this.state.openModal} 
                                     editable={this.state.editable} 
